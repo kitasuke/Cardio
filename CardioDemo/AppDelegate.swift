@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import HealthKit
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -40,7 +41,23 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func applicationWillTerminate(application: UIApplication) {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
     }
+    
+    func applicationShouldRequestHealthAuthorization(application: UIApplication) {
+        authorize()
+    }
 
-
+    private func authorize(shareIdentifiers: [String] = [HKQuantityTypeIdentifierDistanceWalkingRunning], readIdentifiers: [String] = [HKQuantityTypeIdentifierActiveEnergyBurned, HKQuantityTypeIdentifierDistanceWalkingRunning, HKQuantityTypeIdentifierHeartRate]) {
+        let healthStore = HKHealthStore()
+        guard HKHealthStore.isHealthDataAvailable() else {
+            return
+        }
+        
+        let shareTypes = shareIdentifiers.flatMap { HKObjectType.quantityTypeForIdentifier($0) }
+        let typesToShare = Set([HKWorkoutType.workoutType()] as [HKSampleType] + shareTypes as [HKSampleType])
+        let typesToRead = Set(readIdentifiers.flatMap { HKObjectType.quantityTypeForIdentifier($0) })
+        
+        healthStore.requestAuthorizationToShareTypes(typesToShare, readTypes: typesToRead, completion: { (result, error) -> Void in
+        })
+    }
 }
 

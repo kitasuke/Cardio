@@ -22,6 +22,7 @@
 		EC0F48581BC53DB80013470A /* GlanceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC0F48571BC53DB80013470A /* GlanceController.swift */; };
 		EC0F485A1BC53DB80013470A /* ComplicationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC0F48591BC53DB80013470A /* ComplicationController.swift */; };
 		EC0F485C1BC53DB80013470A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = EC0F485B1BC53DB80013470A /* Assets.xcassets */; };
+		EC0F48731BC5407C0013470A /* HealthKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EC0F48721BC5407C0013470A /* HealthKit.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -97,6 +98,7 @@
 		EC0F48591BC53DB80013470A /* ComplicationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComplicationController.swift; sourceTree = "<group>"; };
 		EC0F485B1BC53DB80013470A /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		EC0F485D1BC53DB80013470A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		EC0F48721BC5407C0013470A /* HealthKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = HealthKit.framework; path = System/Library/Frameworks/HealthKit.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -104,6 +106,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				EC0F48731BC5407C0013470A /* HealthKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -120,6 +123,7 @@
 		EC0F48201BC53DB80013470A = {
 			isa = PBXGroup;
 			children = (
+				EC0F48721BC5407C0013470A /* HealthKit.framework */,
 				EC0F482B1BC53DB80013470A /* CardioDemo */,
 				EC0F483F1BC53DB80013470A /* CardioDemo WatchKit App */,
 				EC0F484E1BC53DB80013470A /* CardioDemo WatchKit Extension */,
