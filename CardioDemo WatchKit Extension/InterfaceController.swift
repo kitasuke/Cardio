@@ -8,7 +8,7 @@
 
 import WatchKit
 import Foundation
-
+import Cardio
 
 class InterfaceController: WKInterfaceController {
 
@@ -16,6 +16,11 @@ class InterfaceController: WKInterfaceController {
         super.awakeWithContext(context)
         
         // Configure interface objects here.
+        let context = Context()
+        let cardio = Cardio(context: context)
+        cardio.authorize { result -> Void in
+            print(result)
+        }
     }
 
     override func willActivate() {
