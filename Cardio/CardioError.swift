@@ -15,4 +15,7 @@ public enum CardioError: ErrorType {
     case SessionAlreadyRunningError(NSError)
     case NoCurrentSessionError(NSError)
     case CannotBeRestartedError(NSError)
+    
+    case WorkoutSaveFailedError(NSError?)
+    case DataSaveFailedError(NSError?)
 }
