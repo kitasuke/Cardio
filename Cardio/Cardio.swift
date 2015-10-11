@@ -138,27 +138,24 @@ public class Cardio: NSObject, HKWorkoutSessionDelegate {
     private func saveWorkout(workoutSession: HKWorkoutSession) {
         guard let startDate = self.startDate, endDate = self.endDate else { return }
         
-        let quantities = distanceQuantities + activeEnergyQuantities
+        let quantities = distanceQuantities + activeEnergyQuantities + heartRateQuantities
         let samples = quantities.map { $0 as HKSample }
         
         guard samples.count > 0 else {
-            endHandler?(.Failure(.NoSaveDataError))
+            endHandler?(.Failure(.NoValidSavedDataError))
             return
         }
         
-        let totalDistance = distanceQuantities.reduce(0.0) { (distance: Double, sample: HKQuantitySample) in
-            return distance + sample.quantity.doubleValueForUnit(context.distanceUnit)
-        }
-        let totalEnergy = activeEnergyQuantities.reduce(0.0) { (energy: Double, sample: HKQuantitySample) in
-            return energy + sample.quantity.doubleValueForUnit(context.activeEnergyUnit)
-        }
-        let totalHeartRate = heartRateQuantities.reduce(0.0) { (heartRate: Double, sample: HKQuantitySample) in
-            return heartRate + sample.quantity.doubleValueForUnit(context.heartRateUnit)
-        }
+        // values to save
+        let totalDistance = totalValue(context.distanceUnit)
+        let totalActiveEnergy = totalValue(context.activeEnergyUnit)
+        let totalHeartRate = totalValue(context.heartRateUnit)
         let averageHeartRate = Int(totalHeartRate) / heartRateQuantities.count
         
-        let workout = HKWorkout(activityType: context.activityType, startDate: startDate, endDate: endDate, duration: endDate.timeIntervalSinceDate(startDate), totalEnergyBurned: HKQuantity(unit: context.activeEnergyUnit, doubleValue: totalEnergy), totalDistance: HKQuantity(unit: context.distanceUnit, doubleValue: totalDistance), metadata: ["Average Heart Rate": averageHeartRate])
+        // workout data with metadata
+        let workout = HKWorkout(activityType: context.activityType, startDate: startDate, endDate: endDate, duration: endDate.timeIntervalSinceDate(startDate), totalEnergyBurned: HKQuantity(unit: context.activeEnergyUnit, doubleValue: totalActiveEnergy), totalDistance: HKQuantity(unit: context.distanceUnit, doubleValue: totalDistance), metadata: ["Average Heart Rate": averageHeartRate])
         
+        // save workout
         healthStore.saveObject(workout) { (success, error) in
             guard success else {
                 dispatch_async(dispatch_get_main_queue(), { () -> Void in
@@ -167,6 +164,7 @@ public class Cardio: NSObject, HKWorkoutSessionDelegate {
                 return
             }
             
+            // save distance, active energy and heart rate themselves
             self.healthStore.addSamples(samples, toWorkout: workout, completion: { (success, error) -> Void in
                 let result: Result<(HKWorkoutSession, NSDate), CardioError>
                 if success {
@@ -197,7 +195,7 @@ public class Cardio: NSObject, HKWorkoutSessionDelegate {
         return query
     }
     
-    private func addSamples<T: HKQuantityType>(type: T, samples: [HKSample]?) {
+    private func addSamples(type: HKQuantityType, samples: [HKSample]?) {
         guard let samples = samples as? [HKQuantitySample] else { return }
         guard let quantity = samples.last?.quantity else { return }
         
@@ -214,5 +212,25 @@ public class Cardio: NSObject, HKWorkoutSessionDelegate {
         default: break
         }
         updateHandler?(quantity)
+    }
+    
+    // MARK: - Calculator
+    
+    private func totalValue(unit: HKUnit) -> Double {
+        let quantities: [HKQuantitySample]
+        switch unit {
+        case context.distanceUnit:
+            quantities = distanceQuantities
+        case context.activeEnergyUnit:
+            quantities = activeEnergyQuantities
+        case context.heartRateUnit:
+            quantities = heartRateQuantities
+        default:
+            quantities = [HKQuantitySample]()
+        }
+        
+        return quantities.reduce(0.0) { (value: Double, sample: HKQuantitySample) in
+            return value + sample.quantity.doubleValueForUnit(unit)
+        }
     }
 }
