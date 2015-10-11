@@ -9,7 +9,10 @@
 import Foundation
 
 public enum CardioError: ErrorType {
-    case UnavalableDeviceError
-    case InvalidInputError
+    case UnsupportedDeviceError
     case AuthorizationError(NSError?)
+
+    case SessionAlreadyRunningError(NSError)
+    case NoCurrentSessionError(NSError)
+    case CannotBeRestartedError(NSError)
 }

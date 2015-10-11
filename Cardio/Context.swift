@@ -9,14 +9,60 @@
 import Foundation
 import HealthKit
 
-public struct Context {
-    let healthStore: HKHealthStore
-    let activityType: HKWorkoutActivityType
-    let locationType: HKWorkoutSessionLocationType
+public protocol Context {
+    var activityType: HKWorkoutActivityType { get }
+    var locationType: HKWorkoutSessionLocationType { get }
     
-    public init(healthStore: HKHealthStore = HKHealthStore(), activityType: HKWorkoutActivityType = .Running, locationType: HKWorkoutSessionLocationType = .Outdoor) {
-        self.healthStore = healthStore
-        self.activityType = activityType
-        self.locationType = locationType
+    var distanceUnit: HKUnit { get }
+    var activeEnergyUnit: HKUnit { get }
+    var heartRateUnit: HKUnit { get }
+
+    var distanceType: HKQuantityType { get }
+    var activeEnergyType: HKQuantityType { get }
+    var heartRateType: HKQuantityType { get }
+    
+    var shareIdentifiers: [String] { get }
+    var readIdentifiers: [String] { get }
+}
+
+public extension Context {
+    public var activityType: HKWorkoutActivityType {
+        return .Running
+    }
+    
+    public var locationType: HKWorkoutSessionLocationType {
+        return .Outdoor
+    }
+    
+    public var distanceUnit: HKUnit {
+        return HKUnit.meterUnit()
+    }
+    
+    public var activeEnergyUnit: HKUnit {
+        return HKUnit.kilocalorieUnit()
+    }
+    
+    public var heartRateUnit: HKUnit {
+        return HKUnit(fromString: "count/min")
+    }
+    
+    public var distanceType: HKQuantityType {
+        return HKObjectType.quantityTypeForIdentifier(HKQuantityTypeIdentifierDistanceWalkingRunning)!
+    }
+    
+    public var activeEnergyType: HKQuantityType {
+        return HKObjectType.quantityTypeForIdentifier(HKQuantityTypeIdentifierActiveEnergyBurned)!
+    }
+    
+    public var heartRateType: HKQuantityType {
+        return HKObjectType.quantityTypeForIdentifier(HKQuantityTypeIdentifierHeartRate)!
+    }
+    
+    public var shareIdentifiers: [String] {
+        return [HKQuantityTypeIdentifierDistanceWalkingRunning]
+    }
+    
+    public var readIdentifiers: [String] {
+        return [HKQuantityTypeIdentifierActiveEnergyBurned, HKQuantityTypeIdentifierDistanceWalkingRunning, HKQuantityTypeIdentifierHeartRate]
     }
 }
