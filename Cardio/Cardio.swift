@@ -84,6 +84,8 @@ public class Cardio: NSObject, HKWorkoutSessionDelegate {
     }
     
     public func end(handler: (Result<(HKWorkoutSession, NSDate), CardioError>) -> Void = { r in }) {
+        guard workoutSession != nil else { return }
+        
         endHandler = handler
         healthStore.endWorkoutSession(workoutSession!)
     }
