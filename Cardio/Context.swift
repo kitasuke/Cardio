@@ -35,7 +35,7 @@ public extension Context {
     }
     
     public var distanceUnit: HKUnit {
-        return HKUnit.meterUnit()
+        return HKUnit.meterUnitWithMetricPrefix(.Kilo)
     }
     
     public var activeEnergyUnit: HKUnit {
