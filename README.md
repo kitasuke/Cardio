@@ -1,2 +1,2 @@
 # Cardio
-HealthKit wrapper for watchOS 2 in Swift
+HealthKit wrapper for workout in watchOS 2
