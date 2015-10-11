@@ -11,9 +11,9 @@ import HealthKit
 import Result
 
 public class Cardio: NSObject, HKWorkoutSessionDelegate {
-    let context: Context
-    let healthStore: HKHealthStore
-    let workoutSession: HKWorkoutSession
+    private let context: Context
+    private let healthStore: HKHealthStore
+    private var workoutSession: HKWorkoutSession?
     
     private var startHandler: (Result<(HKWorkoutSession, NSDate), CardioError> -> Void)?
     private var endHandler: (Result<(HKWorkoutSession, NSDate), CardioError> -> Void)?
@@ -22,15 +22,15 @@ public class Cardio: NSObject, HKWorkoutSessionDelegate {
     private var startDate: NSDate?
     private var endDate: NSDate?
     
-    private var queries = [HKQuery]()
+    private lazy var queries = [HKQuery]()
     
-    var currentDistanceQuantity: HKQuantity
-    var currentActiveEnergyQuantity: HKQuantity
-    var currentHeartRateQuantity: HKQuantity
+    private var currentDistanceQuantity: HKQuantity
+    private var currentActiveEnergyQuantity: HKQuantity
+    private var currentHeartRateQuantity: HKQuantity
     
-    var distanceQuantities = [HKQuantitySample]()
-    var activeEnergyQuantities = [HKQuantitySample]()
-    var heartRateQuantities = [HKQuantitySample]()
+    private lazy var distanceQuantities = [HKQuantitySample]()
+    private lazy var activeEnergyQuantities = [HKQuantitySample]()
+    private lazy var heartRateQuantities = [HKQuantitySample]()
     
     // MARK: - Initializer
     
@@ -45,7 +45,7 @@ public class Cardio: NSObject, HKWorkoutSessionDelegate {
         
         super.init()
         
-        self.workoutSession.delegate = self
+        self.workoutSession!.delegate = self
     }
     
     // MARK: - Public
@@ -76,12 +76,16 @@ public class Cardio: NSObject, HKWorkoutSessionDelegate {
     public func start(handler: (Result<(HKWorkoutSession, NSDate), CardioError>) -> Void = { r in }) {
         startHandler = handler
         
-        healthStore.startWorkoutSession(workoutSession)
+        if workoutSession == nil {
+            workoutSession = HKWorkoutSession(activityType: context.activityType, locationType: context.locationType)
+            workoutSession!.delegate = self
+        }
+        healthStore.startWorkoutSession(workoutSession!)
     }
     
     public func end(handler: (Result<(HKWorkoutSession, NSDate), CardioError>) -> Void = { r in }) {
         endHandler = handler
-        healthStore.endWorkoutSession(workoutSession)
+        healthStore.endWorkoutSession(workoutSession!)
     }
     
     // MARK: - HKWorkoutSessionDelegate
@@ -126,6 +130,7 @@ public class Cardio: NSObject, HKWorkoutSessionDelegate {
         
         queries.forEach { healthStore.stopQuery($0) }
         queries.removeAll()
+        self.workoutSession = nil
         
         saveWorkout(workoutSession)
     }
@@ -136,7 +141,10 @@ public class Cardio: NSObject, HKWorkoutSessionDelegate {
         let quantities = distanceQuantities + activeEnergyQuantities
         let samples = quantities.map { $0 as HKSample }
         
-        guard samples.count > 0 else { return }
+        guard samples.count > 0 else {
+            endHandler?(.Failure(.NoSaveDataError))
+            return
+        }
         
         let totalDistance = distanceQuantities.reduce(0.0) { (distance: Double, sample: HKQuantitySample) in
             return distance + sample.quantity.doubleValueForUnit(context.distanceUnit)
@@ -144,8 +152,12 @@ public class Cardio: NSObject, HKWorkoutSessionDelegate {
         let totalEnergy = activeEnergyQuantities.reduce(0.0) { (energy: Double, sample: HKQuantitySample) in
             return energy + sample.quantity.doubleValueForUnit(context.activeEnergyUnit)
         }
+        let totalHeartRate = heartRateQuantities.reduce(0.0) { (heartRate: Double, sample: HKQuantitySample) in
+            return heartRate + sample.quantity.doubleValueForUnit(context.heartRateUnit)
+        }
+        let averageHeartRate = Int(totalHeartRate) / heartRateQuantities.count
         
-        let workout = HKWorkout(activityType: context.activityType, startDate: startDate, endDate: endDate, duration: endDate.timeIntervalSinceDate(startDate), totalEnergyBurned: HKQuantity(unit: context.activeEnergyUnit, doubleValue: totalEnergy), totalDistance: HKQuantity(unit: context.distanceUnit, doubleValue: totalDistance), metadata: nil)
+        let workout = HKWorkout(activityType: context.activityType, startDate: startDate, endDate: endDate, duration: endDate.timeIntervalSinceDate(startDate), totalEnergyBurned: HKQuantity(unit: context.activeEnergyUnit, doubleValue: totalEnergy), totalDistance: HKQuantity(unit: context.distanceUnit, doubleValue: totalDistance), metadata: ["Average Heart Rate": averageHeartRate])
         
         healthStore.saveObject(workout) { (success, error) in
             guard success else {

@@ -59,7 +59,7 @@ public extension Context {
     }
     
     public var shareIdentifiers: [String] {
-        return [HKQuantityTypeIdentifierDistanceWalkingRunning]
+        return [HKQuantityTypeIdentifierActiveEnergyBurned, HKQuantityTypeIdentifierDistanceWalkingRunning, HKQuantityTypeIdentifierHeartRate]
     }
     
     public var readIdentifiers: [String] {
