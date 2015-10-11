@@ -19,6 +19,8 @@ class InterfaceController: WKInterfaceController {
     @IBOutlet weak var activeEnergyLabel: WKInterfaceLabel!
     @IBOutlet weak var heartRateLabel: WKInterfaceLabel!
     private var cardio: Cardio!
+    private var totalDistance: Double = 0
+    private var totalActiveEnergy: Double = 0
 
     override func awakeWithContext(context: AnyObject?) {
         super.awakeWithContext(context)
@@ -31,14 +33,14 @@ class InterfaceController: WKInterfaceController {
         
         cardio.updateHandler = { quantity in
             if quantity.isCompatibleWithUnit(context.distanceUnit) {
-                let distance = quantity.doubleValueForUnit(context.distanceUnit)
-                self.distanceLabel.setText("\(distance)")
+                self.totalDistance += quantity.doubleValueForUnit(context.distanceUnit)
+                self.distanceLabel.setText((NSString(format: "%0.2f", self.totalDistance) as String) + "km")
             } else if quantity.isCompatibleWithUnit(context.activeEnergyUnit) {
-                let activeEnergy = quantity.doubleValueForUnit(context.activeEnergyUnit)
-                self.activeEnergyLabel.setText("\(activeEnergy)")
+                self.totalActiveEnergy += quantity.doubleValueForUnit(context.activeEnergyUnit)
+                self.activeEnergyLabel.setText("\(Int(self.totalActiveEnergy))cal")
             } else if quantity.isCompatibleWithUnit(context.heartRateUnit) {
                 let heartRate = quantity.doubleValueForUnit(context.heartRateUnit)
-                self.heartRateLabel.setText("\(heartRate)")
+                self.heartRateLabel.setText("\(Int(heartRate))bpm")
             }
         }
     }
