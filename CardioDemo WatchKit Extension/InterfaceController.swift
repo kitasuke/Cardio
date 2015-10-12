@@ -66,6 +66,13 @@ class InterfaceController: WKInterfaceController {
             self.distanceLabel.setText("0KM")
             self.activeEnergyLabel.setText("0CAL")
             self.heartRateLabel.setText("0BPM")
+            
+            switch result {
+            case .Success(_, _):
+                self.cardio.save({ result -> Void in
+                })
+            default: break
+            }
         }
     }
 }
