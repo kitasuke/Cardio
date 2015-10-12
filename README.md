@@ -5,7 +5,7 @@ Simple HealthKit wrapper for workout in watchOS 2
 
 ## Features
 
-- Super simple to access HealthKit
+- Super simple way to access HealthKit
 - Specialized for workout app
 
 ## Usage
