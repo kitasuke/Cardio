@@ -7,6 +7,59 @@ Simple HealthKit wrapper for workout in watchOS 2
 
 ## Usage
 
+- Extend `Context` protocol and set your favorite types
+```swift
+public protocol Context {
+    var activityType: HKWorkoutActivityType { get }
+    var locationType: HKWorkoutSessionLocationType { get }
+    
+    var distanceUnit: HKUnit { get }
+    var activeEnergyUnit: HKUnit { get }
+    var heartRateUnit: HKUnit { get }
+
+    var distanceType: HKQuantityType { get }
+    var activeEnergyType: HKQuantityType { get }
+    var heartRateType: HKQuantityType { get }
+    
+    var shareIdentifiers: [String] { get }
+    var readIdentifiers: [String] { get }
+}
+```
+
+- Initialize `Cardio` with context
+```swift
+let cardio = Cardio(context: context)
+```
+
+- Authorize HealthKit to access
+```swift
+cardio.authorize { result in
+}
+```
+
+- Set update handler(optional)
+```swift
+cardio.distanceHandler = { distance, total in
+}
+
+cardio.activeEnergyHandler = { activeEnergy, total in
+}
+
+cardio.heartRateHandler = { heartRate, average in
+}
+```
+
+- Start your workout session
+```swift
+cardio.start { result in
+}
+```
+- End your workout session
+```swift
+cardio.end { result in
+}
+```
+
 See more detail in Demo project
 
 ## Requirements
