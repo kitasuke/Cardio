@@ -94,6 +94,58 @@ final public class Cardio: NSObject, HKWorkoutSessionDelegate {
         healthStore.endWorkoutSession(workoutSession!)
     }
     
+    public func save(handler: (Result<(), CardioError>) -> Void = { r in }) {
+        guard let startDate = self.startDate, endDate = self.endDate else {
+            handler(.Failure(.InvalidDurationError))
+            return
+        }
+        
+        let quantities = distanceQuantities + activeEnergyQuantities + heartRateQuantities
+        let samples = quantities.map { $0 as HKSample }
+        
+        guard samples.count > 0 else {
+            handler(.Failure(.NoValidSavedDataError))
+            return
+        }
+        
+        // values to save
+        let totalDistance = totalValue(context.distanceUnit)
+        let totalActiveEnergy = totalValue(context.activeEnergyUnit)
+        
+        var metadata = [String: AnyObject]()
+        let averageHeartRate = Int(self.averageHeartRate())
+        if averageHeartRate > 0 {
+            metadata["Average Heart Rate"] = averageHeartRate
+        }
+        
+        // workout data with metadata
+        let workout = HKWorkout(activityType: context.activityType, startDate: startDate, endDate: endDate, duration: endDate.timeIntervalSinceDate(startDate), totalEnergyBurned: HKQuantity(unit: context.activeEnergyUnit, doubleValue: totalActiveEnergy), totalDistance: HKQuantity(unit: context.distanceUnit, doubleValue: totalDistance), metadata: metadata)
+        
+        // save workout
+        healthStore.saveObject(workout) { (success, error) in
+            guard success else {
+                dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                    handler(.Failure(.WorkoutSaveFailedError(error)))
+                })
+                return
+            }
+            
+            // save distance, active energy and heart rate themselves
+            self.healthStore.addSamples(samples, toWorkout: workout, completion: { (success, error) -> Void in
+                let result: Result<(), CardioError>
+                if success {
+                    result = .Success()
+                } else {
+                    result = .Failure(.DataSaveFailedError(error))
+                }
+                
+                dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                    handler(result)
+                })
+            })
+        }
+    }
+    
     // MARK: - HKWorkoutSessionDelegate
 
     public func workoutSession(workoutSession: HKWorkoutSession, didChangeToState toState: HKWorkoutSessionState, fromState: HKWorkoutSessionState, date: NSDate) {
@@ -138,56 +190,7 @@ final public class Cardio: NSObject, HKWorkoutSessionDelegate {
         queries.removeAll()
         self.workoutSession = nil
         
-        saveWorkout(workoutSession)
-    }
-    
-    private func saveWorkout(workoutSession: HKWorkoutSession) {
-        guard let startDate = self.startDate, endDate = self.endDate else { return }
-        
-        let quantities = distanceQuantities + activeEnergyQuantities + heartRateQuantities
-        let samples = quantities.map { $0 as HKSample }
-        
-        guard samples.count > 0 else {
-            endHandler?(.Failure(.NoValidSavedDataError))
-            return
-        }
-        
-        // values to save
-        let totalDistance = totalValue(context.distanceUnit)
-        let totalActiveEnergy = totalValue(context.activeEnergyUnit)
-        
-        var metadata = [String: AnyObject]()
-        let averageHeartRate = Int(self.averageHeartRate())
-        if averageHeartRate > 0 {
-           metadata["Average Heart Rate"] = averageHeartRate
-        }
-        
-        // workout data with metadata
-        let workout = HKWorkout(activityType: context.activityType, startDate: startDate, endDate: endDate, duration: endDate.timeIntervalSinceDate(startDate), totalEnergyBurned: HKQuantity(unit: context.activeEnergyUnit, doubleValue: totalActiveEnergy), totalDistance: HKQuantity(unit: context.distanceUnit, doubleValue: totalDistance), metadata: metadata)
-        
-        // save workout
-        healthStore.saveObject(workout) { (success, error) in
-            guard success else {
-                dispatch_async(dispatch_get_main_queue(), { () -> Void in
-                    self.endHandler?(.Failure(.WorkoutSaveFailedError(error)))
-                })
-                return
-            }
-            
-            // save distance, active energy and heart rate themselves
-            self.healthStore.addSamples(samples, toWorkout: workout, completion: { (success, error) -> Void in
-                let result: Result<(HKWorkoutSession, NSDate), CardioError>
-                if success {
-                    result = .Success(workoutSession, endDate)
-                } else {
-                    result = .Failure(.DataSaveFailedError(error))
-                }
-                
-                dispatch_async(dispatch_get_main_queue(), { () -> Void in
-                    self.endHandler?(result)
-                })
-            })
-        }
+        endHandler?(.Success(workoutSession, date))
     }
     
     // MARK: - Query
