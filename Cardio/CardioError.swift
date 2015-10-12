@@ -8,6 +8,7 @@
 
 import Foundation
 
+@available (watchOS 2.0, *)
 public enum CardioError: ErrorType {
     case UnsupportedDeviceError
     case AuthorizationError(NSError?)

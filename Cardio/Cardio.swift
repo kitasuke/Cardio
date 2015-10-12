@@ -10,6 +10,7 @@ import Foundation
 import HealthKit
 import Result
 
+@available (watchOS 2.0, *)
 public class Cardio: NSObject, HKWorkoutSessionDelegate {
     private let context: Context
     private let healthStore: HKHealthStore
