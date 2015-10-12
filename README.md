@@ -65,6 +65,12 @@ cardio.end { result in
 }
 ```
 
+- Save your workout
+```swift
+cardio.save { result in
+}
+```
+
 See more detail in Demo project
 
 ## Requirements
