@@ -3,7 +3,11 @@
 # Cardio
 Simple HealthKit wrapper for workout in watchOS 2
 
+## Features
+
 ## Usage
+
+See more detail in Demo project
 
 ## Requirements
 
@@ -11,6 +15,8 @@ watchOS 2.0+
 Swift 2.0+
 
 ## Installation
+
+**Add HealthKit entitlement in Capabilities tab for your both containing app target and WatchKit extension target**
 
 ### Carthage
 Cardio is available through [Carthage](https://github.com/Carthage/Carthage).
@@ -23,7 +29,7 @@ github "kitasuke/Cardio"
 
 Then, run `carthage update`
 
-You can see `Cardio.framework` and `Result.framework` in `Carthage/Build/watchOS/` now, so drag and drop them to `Embedded Binaries` in General menu tab with your WatchKit Extension.
+You can see `Cardio.framework` and `Result.framework` in `Carthage/Build/watchOS/` now, so drag and drop them to `Embedded Binaries` in General menu tab for your WatchKit Extension.
 
 In case you haven't installed Carthage yet, run the following command
 
