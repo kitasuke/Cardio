@@ -9,6 +9,7 @@
 import Foundation
 import HealthKit
 
+@available (watchOS 2.0, *)
 public protocol Context {
     var activityType: HKWorkoutActivityType { get }
     var locationType: HKWorkoutSessionLocationType { get }
@@ -25,6 +26,7 @@ public protocol Context {
     var readIdentifiers: [String] { get }
 }
 
+@available (watchOS 2.0, *)
 public extension Context {
     public var activityType: HKWorkoutActivityType {
         return .Running
