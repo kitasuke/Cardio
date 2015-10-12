@@ -94,7 +94,7 @@ final public class Cardio: NSObject, HKWorkoutSessionDelegate {
         healthStore.endWorkoutSession(workoutSession!)
     }
     
-    public func save(handler: (Result<(), CardioError>) -> Void = { r in }) {
+    public func save(var metadata: [String: AnyObject] = [:], handler: (Result<(), CardioError>) -> Void = { r in }) {
         guard let startDate = self.startDate, endDate = self.endDate else {
             handler(.Failure(.InvalidDurationError))
             return
@@ -108,15 +108,13 @@ final public class Cardio: NSObject, HKWorkoutSessionDelegate {
             return
         }
         
+        heartRateMetadata().forEach { key, value in
+            metadata[key] = value
+        }
+        
         // values to save
         let totalDistance = totalValue(context.distanceUnit)
         let totalActiveEnergy = totalValue(context.activeEnergyUnit)
-        
-        var metadata = [String: AnyObject]()
-        let averageHeartRate = Int(self.averageHeartRate())
-        if averageHeartRate > 0 {
-            metadata["Average Heart Rate"] = averageHeartRate
-        }
         
         // workout data with metadata
         let workout = HKWorkout(activityType: context.activityType, startDate: startDate, endDate: endDate, duration: endDate.timeIntervalSinceDate(startDate), totalEnergyBurned: HKQuantity(unit: context.activeEnergyUnit, doubleValue: totalActiveEnergy), totalDistance: HKQuantity(unit: context.distanceUnit, doubleValue: totalDistance), metadata: metadata)
@@ -268,5 +266,28 @@ final public class Cardio: NSObject, HKWorkoutSessionDelegate {
         
         let averageHeartRate = totalHeartRate / Double(heartRateQuantities.count)
         return averageHeartRate
+    }
+    
+    // MARK: - Metadata
+    
+    private func heartRateMetadata() -> [String: AnyObject] {
+        var metadata = [String: AnyObject]()
+        guard context.heartRateMetadata.count > 0 else { return metadata }
+        
+        if context.heartRateMetadata.contains(.Average) {
+            let averageHeartRate = Int(self.averageHeartRate())
+            if averageHeartRate > 0 {
+                metadata[MetadataHeartRate.Average.rawValue] = averageHeartRate
+            }
+        }
+        
+        let heartRates = heartRateQuantities.map { $0.quantity.doubleValueForUnit(context.heartRateUnit) }
+        if context.heartRateMetadata.contains(.Max), let maxHeartRate = heartRates.maxElement() {
+            metadata[MetadataHeartRate.Max.rawValue] = maxHeartRate
+        }
+        if context.heartRateMetadata.contains(.Min), let minHeartRate = heartRates.minElement() {
+            metadata[MetadataHeartRate.Min.rawValue] = minHeartRate
+        }
+        return metadata
     }
 }

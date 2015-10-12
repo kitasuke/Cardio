@@ -69,8 +69,8 @@ class InterfaceController: WKInterfaceController {
             
             switch result {
             case .Success(_, _):
-                self.cardio.save({ result -> Void in
-                })
+                self.cardio.save() { result in
+                }
             default: break
             }
         }

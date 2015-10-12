@@ -10,6 +10,13 @@ import Foundation
 import HealthKit
 
 @available (watchOS 2.0, *)
+public enum MetadataHeartRate: String {
+    case Average = "Average Heart Rate"
+    case Max = "Max Heart Rate"
+    case Min = "Min Heart Rate"
+}
+
+@available (watchOS 2.0, *)
 public protocol Context {
     var activityType: HKWorkoutActivityType { get }
     var locationType: HKWorkoutSessionLocationType { get }
@@ -24,6 +31,8 @@ public protocol Context {
     
     var shareIdentifiers: [String] { get }
     var readIdentifiers: [String] { get }
+    
+    var heartRateMetadata: [MetadataHeartRate] { get }
 }
 
 @available (watchOS 2.0, *)
@@ -66,5 +75,9 @@ public extension Context {
     
     public var readIdentifiers: [String] {
         return [HKQuantityTypeIdentifierActiveEnergyBurned, HKQuantityTypeIdentifierDistanceWalkingRunning, HKQuantityTypeIdentifierHeartRate]
+    }
+    
+    public var heartRateMetadata: [MetadataHeartRate] {
+        return [.Average, .Max, .Min]
     }
 }
