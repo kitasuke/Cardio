@@ -5,6 +5,9 @@ Simple HealthKit wrapper for workout in watchOS 2
 
 ## Features
 
+- Super simple to access HealthKit
+- Specialized for workout app
+
 ## Usage
 
 - Extend `Context` protocol and set your favorite types
