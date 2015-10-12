@@ -63,9 +63,9 @@ class InterfaceController: WKInterfaceController {
     
     @IBAction func endWorkout(sender: WKInterfaceButton) {
         cardio.end { result in
-            self.distanceLabel.setText(nil)
-            self.activeEnergyLabel.setText(nil)
-            self.heartRateLabel.setText(nil)
+            self.distanceLabel.setText("0KM")
+            self.activeEnergyLabel.setText("0CAL")
+            self.heartRateLabel.setText("0BPM")
         }
     }
 }

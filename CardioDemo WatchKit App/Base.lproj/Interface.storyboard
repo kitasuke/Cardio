@@ -10,6 +10,13 @@
             <objects>
                 <controller id="AgC-eL-Hgc" customClass="InterfaceController" customModule="CardioDemo_WatchKit_App" customModuleProvider="target">
                     <items>
+                        <group width="1" alignment="left" layout="vertical" id="lyo-Lf-fow">
+                            <items>
+                                <label alignment="center" text="0KM" id="lYF-cB-byE"/>
+                                <label alignment="center" text="0CAL" id="QtS-67-mtU"/>
+                                <label alignment="center" text="0BPM" id="Bcd-IY-9vT"/>
+                            </items>
+                        </group>
                         <button width="1" alignment="left" title="Start" id="tzW-oN-hrX">
                             <connections>
                                 <action selector="startWorkout:" destination="AgC-eL-Hgc" id="sqg-gp-VDX"/>
@@ -20,13 +27,6 @@
                                 <action selector="endWorkout:" destination="AgC-eL-Hgc" id="eLc-rq-Hvw"/>
                             </connections>
                         </button>
-                        <group width="1" alignment="left" layout="vertical" id="lyo-Lf-fow">
-                            <items>
-                                <label alignment="center" text="distance" id="lYF-cB-byE"/>
-                                <label alignment="center" text="energy" id="QtS-67-mtU"/>
-                                <label alignment="center" text="heart" id="Bcd-IY-9vT"/>
-                            </items>
-                        </group>
                     </items>
                     <connections>
                         <outlet property="activeEnergyLabel" destination="QtS-67-mtU" id="SxH-dL-ijL"/>
