@@ -42,7 +42,7 @@ cardio.authorize { result in
 }
 ```
 
-- Set update handler(optional)
+- Set update handler
 ```swift
 cardio.distanceHandler = { distance, total in
 }
