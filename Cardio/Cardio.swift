@@ -18,7 +18,10 @@ public class Cardio: NSObject, HKWorkoutSessionDelegate {
     
     private var startHandler: (Result<(HKWorkoutSession, NSDate), CardioError> -> Void)?
     private var endHandler: (Result<(HKWorkoutSession, NSDate), CardioError> -> Void)?
-    public var updateHandler: ((HKQuantity) -> Void)?
+    
+    public var distanceHandler: ((Double, Double) -> Void)?
+    public var activeEnergyHandler: ((Double, Double) -> Void)?
+    public var heartRateHandler: ((Double, Double) -> Void)?
     
     private var startDate: NSDate?
     private var endDate: NSDate?
@@ -152,8 +155,7 @@ public class Cardio: NSObject, HKWorkoutSessionDelegate {
         // values to save
         let totalDistance = totalValue(context.distanceUnit)
         let totalActiveEnergy = totalValue(context.activeEnergyUnit)
-        let totalHeartRate = totalValue(context.heartRateUnit)
-        let averageHeartRate = Int(totalHeartRate) / heartRateQuantities.count
+        let averageHeartRate = Int(self.averageHeartRate())
         
         // workout data with metadata
         let workout = HKWorkout(activityType: context.activityType, startDate: startDate, endDate: endDate, duration: endDate.timeIntervalSinceDate(startDate), totalEnergyBurned: HKQuantity(unit: context.activeEnergyUnit, doubleValue: totalActiveEnergy), totalDistance: HKQuantity(unit: context.distanceUnit, doubleValue: totalDistance), metadata: ["Average Heart Rate": averageHeartRate])
@@ -202,19 +204,34 @@ public class Cardio: NSObject, HKWorkoutSessionDelegate {
         guard let samples = samples as? [HKQuantitySample] else { return }
         guard let quantity = samples.last?.quantity else { return }
         
+        let unit: HKUnit
         switch type {
         case context.distanceType:
             currentDistanceQuantity = quantity
             distanceQuantities.appendContentsOf(samples)
+            
+            unit = context.distanceUnit
+            dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                distanceHandler?(quantity.doubleValueForUnit(unit), totalValue(unit))
+            })
         case context.activeEnergyType:
             currentActiveEnergyQuantity = quantity
             activeEnergyQuantities.appendContentsOf(samples)
+            
+            unit = context.activeEnergyUnit
+            dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                activeEnergyHandler?(quantity.doubleValueForUnit(unit), totalValue(unit))
+            })
         case context.heartRateType:
             currentHeartRateQuantity = quantity
             heartRateQuantities.appendContentsOf(samples)
-        default: break
+            
+            unit = context.heartRateUnit
+            dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                heartRateHandler?(quantity.doubleValueForUnit(unit), averageHeartRate())
+            })
+        default: return
         }
-        updateHandler?(quantity)
     }
     
     // MARK: - Calculator
@@ -235,5 +252,11 @@ public class Cardio: NSObject, HKWorkoutSessionDelegate {
         return quantities.reduce(0.0) { (value: Double, sample: HKQuantitySample) in
             return value + sample.quantity.doubleValueForUnit(unit)
         }
+    }
+    
+    private func averageHeartRate() -> Double {
+        let totalHeartRate = totalValue(context.heartRateUnit)
+        let averageHeartRate = totalHeartRate / Double(heartRateQuantities.count)
+        return averageHeartRate
     }
 }

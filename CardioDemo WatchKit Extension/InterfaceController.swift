@@ -31,17 +31,18 @@ class InterfaceController: WKInterfaceController {
         cardio.authorize { result in
         }
         
-        cardio.updateHandler = { quantity in
-            if quantity.isCompatibleWithUnit(context.distanceUnit) {
-                self.totalDistance += quantity.doubleValueForUnit(context.distanceUnit)
-                self.distanceLabel.setText((NSString(format: "%0.2f", self.totalDistance) as String) + "km")
-            } else if quantity.isCompatibleWithUnit(context.activeEnergyUnit) {
-                self.totalActiveEnergy += quantity.doubleValueForUnit(context.activeEnergyUnit)
-                self.activeEnergyLabel.setText("\(Int(self.totalActiveEnergy))cal")
-            } else if quantity.isCompatibleWithUnit(context.heartRateUnit) {
-                let heartRate = quantity.doubleValueForUnit(context.heartRateUnit)
-                self.heartRateLabel.setText("\(Int(heartRate))bpm")
-            }
+        cardio.distanceHandler = { distance, total in
+            self.totalDistance = total
+            self.distanceLabel.setText((NSString(format: "%0.2f", self.totalDistance) as String) + "KM")
+        }
+        
+        cardio.activeEnergyHandler = { activeEnergy, total in
+            self.totalActiveEnergy = total
+            self.activeEnergyLabel.setText("\(Int(self.totalActiveEnergy))CAL")
+        }
+        
+        cardio.heartRateHandler = { heartRate, average in
+            self.heartRateLabel.setText("\(Int(heartRate))BPM")
         }
     }
 
