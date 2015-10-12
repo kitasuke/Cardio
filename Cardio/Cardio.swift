@@ -155,10 +155,15 @@ final public class Cardio: NSObject, HKWorkoutSessionDelegate {
         // values to save
         let totalDistance = totalValue(context.distanceUnit)
         let totalActiveEnergy = totalValue(context.activeEnergyUnit)
+        
+        var metadata = [String: AnyObject]()
         let averageHeartRate = Int(self.averageHeartRate())
+        if averageHeartRate > 0 {
+           metadata["Average Heart Rate"] = averageHeartRate
+        }
         
         // workout data with metadata
-        let workout = HKWorkout(activityType: context.activityType, startDate: startDate, endDate: endDate, duration: endDate.timeIntervalSinceDate(startDate), totalEnergyBurned: HKQuantity(unit: context.activeEnergyUnit, doubleValue: totalActiveEnergy), totalDistance: HKQuantity(unit: context.distanceUnit, doubleValue: totalDistance), metadata: ["Average Heart Rate": averageHeartRate])
+        let workout = HKWorkout(activityType: context.activityType, startDate: startDate, endDate: endDate, duration: endDate.timeIntervalSinceDate(startDate), totalEnergyBurned: HKQuantity(unit: context.activeEnergyUnit, doubleValue: totalActiveEnergy), totalDistance: HKQuantity(unit: context.distanceUnit, doubleValue: totalDistance), metadata: metadata)
         
         // save workout
         healthStore.saveObject(workout) { (success, error) in
@@ -256,6 +261,8 @@ final public class Cardio: NSObject, HKWorkoutSessionDelegate {
     
     private func averageHeartRate() -> Double {
         let totalHeartRate = totalValue(context.heartRateUnit)
+        guard totalHeartRate > 0 else { return 0.0 }
+        
         let averageHeartRate = totalHeartRate / Double(heartRateQuantities.count)
         return averageHeartRate
     }
