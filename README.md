@@ -65,7 +65,7 @@ cardio.end { result in
 }
 ```
 
-- Save your workout
+- Save your workout in HealthKit
 ```swift
 cardio.save { result in
 }
