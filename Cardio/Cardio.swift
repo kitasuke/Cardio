@@ -54,6 +54,18 @@ final public class Cardio: NSObject, HKWorkoutSessionDelegate {
     
     // MARK: - Public
     
+    public func isAuthorized() -> Bool {
+        var result = true
+        let shareTypes = context.shareIdentifiers.flatMap { HKObjectType.quantityTypeForIdentifier($0) } + [HKWorkoutType.workoutType()]
+        shareTypes.forEach {
+            switch healthStore.authorizationStatusForType($0) {
+            case .SharingAuthorized: return
+            default: result = false
+            }
+        }
+        return result
+    }
+    
     public func authorize(handler: (Result<(), CardioError>) -> Void = { r in }) {
         guard HKHealthStore.isHealthDataAvailable() else {
             handler(.Failure(.UnsupportedDeviceError))

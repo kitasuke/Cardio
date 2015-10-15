@@ -28,7 +28,9 @@ class InterfaceController: WKInterfaceController {
         // Configure interface objects here.
         let context = CardioContext()
         cardio = Cardio(context: context)
-        cardio.authorize { result in
+        if !cardio.isAuthorized() {
+            cardio.authorize() { result in
+            }
         }
         
         cardio.distanceHandler = { distance, total in
