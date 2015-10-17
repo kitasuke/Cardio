@@ -18,6 +18,7 @@ class InterfaceController: WKInterfaceController {
     @IBOutlet weak var distanceLabel: WKInterfaceLabel!
     @IBOutlet weak var activeEnergyLabel: WKInterfaceLabel!
     @IBOutlet weak var heartRateLabel: WKInterfaceLabel!
+    @IBOutlet weak var startButton: WKInterfaceButton!
     private var cardio: Cardio!
     private var totalDistance: Double = 0
     private var totalActiveEnergy: Double = 0
@@ -59,7 +60,18 @@ class InterfaceController: WKInterfaceController {
     }
 
     @IBAction func startWorkout(sender: WKInterfaceButton) {
-        cardio.start { result in
+        if cardio.started {
+            if cardio.paused {
+                startButton.setTitle("Pause")
+                cardio.resume()
+            } else {
+                startButton.setTitle("Resume")
+                cardio.pause()
+            }
+        } else {
+            startButton.setTitle("Pause")
+            cardio.start { result in
+            }
         }
     }
     

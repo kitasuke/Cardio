@@ -32,6 +32,7 @@
                         <outlet property="activeEnergyLabel" destination="QtS-67-mtU" id="SxH-dL-ijL"/>
                         <outlet property="distanceLabel" destination="lYF-cB-byE" id="RLa-KG-bfK"/>
                         <outlet property="heartRateLabel" destination="Bcd-IY-9vT" id="Uvs-TQ-Lma"/>
+                        <outlet property="startButton" destination="tzW-oN-hrX" id="Tgc-cZ-oH5"/>
                     </connections>
                 </controller>
             </objects>
