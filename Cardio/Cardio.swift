@@ -16,6 +16,9 @@ final public class Cardio: NSObject, HKWorkoutSessionDelegate {
     private let healthStore: HKHealthStore
     private var workoutSession: HKWorkoutSession?
     
+    public var started = false
+    public var paused = false
+    
     private var startHandler: (Result<(HKWorkoutSession, NSDate), CardioError> -> Void)?
     private var endHandler: (Result<(HKWorkoutSession, NSDate), CardioError> -> Void)?
     
@@ -23,14 +26,12 @@ final public class Cardio: NSObject, HKWorkoutSessionDelegate {
     public var activeEnergyHandler: ((Double, Double) -> Void)?
     public var heartRateHandler: ((Double, Double) -> Void)?
     
-    private var startDate: NSDate?
-    private var endDate: NSDate?
+    private var startDate = NSDate()
+    private var endDate = NSDate()
+    private var pauseDate = NSDate()
+    private var pauseDuration: NSTimeInterval = 0
     
     private lazy var queries = [HKQuery]()
-    
-    private var currentDistanceQuantity: HKQuantity
-    private var currentActiveEnergyQuantity: HKQuantity
-    private var currentHeartRateQuantity: HKQuantity
     
     private lazy var distanceQuantities = [HKQuantitySample]()
     private lazy var activeEnergyQuantities = [HKQuantitySample]()
@@ -42,10 +43,6 @@ final public class Cardio: NSObject, HKWorkoutSessionDelegate {
         self.context = context
         self.healthStore = HKHealthStore()
         self.workoutSession = HKWorkoutSession(activityType: context.activityType, locationType: context.locationType)
-        
-        self.currentDistanceQuantity = HKQuantity(unit: context.distanceUnit, doubleValue: 0.0)
-        self.currentActiveEnergyQuantity = HKQuantity(unit: context.activeEnergyUnit, doubleValue: 0.0)
-        self.currentHeartRateQuantity = HKQuantity(unit: context.heartRateUnit, doubleValue: 0.0)
         
         super.init()
         
@@ -106,8 +103,23 @@ final public class Cardio: NSObject, HKWorkoutSessionDelegate {
         healthStore.endWorkoutSession(workoutSession!)
     }
     
+    public func pause() {
+        pauseDate = NSDate()
+        paused = true
+        
+        stopQuery()
+    }
+    
+    public func resume() {
+        let resumeDate = NSDate()
+        pauseDuration = resumeDate.timeIntervalSinceDate(pauseDate)
+        paused = false
+        
+        startQuery(resumeDate)
+    }
+    
     public func save(var metadata: [String: AnyObject] = [:], handler: (Result<(), CardioError>) -> Void = { r in }) {
-        guard let startDate = self.startDate, endDate = self.endDate else {
+        guard case .OrderedDescending = endDate.compare(startDate) else {
             handler(.Failure(.InvalidDurationError))
             return
         }
@@ -129,7 +141,7 @@ final public class Cardio: NSObject, HKWorkoutSessionDelegate {
         let totalActiveEnergy = totalValue(context.activeEnergyUnit)
         
         // workout data with metadata
-        let workout = HKWorkout(activityType: context.activityType, startDate: startDate, endDate: endDate, duration: endDate.timeIntervalSinceDate(startDate), totalEnergyBurned: HKQuantity(unit: context.activeEnergyUnit, doubleValue: totalActiveEnergy), totalDistance: HKQuantity(unit: context.distanceUnit, doubleValue: totalDistance), metadata: metadata)
+        let workout = HKWorkout(activityType: context.activityType, startDate: startDate, endDate: endDate, duration: endDate.timeIntervalSinceDate(startDate) - pauseDuration, totalEnergyBurned: HKQuantity(unit: context.activeEnergyUnit, doubleValue: totalActiveEnergy), totalDistance: HKQuantity(unit: context.distanceUnit, doubleValue: totalDistance), metadata: metadata)
         
         // save workout
         healthStore.saveObject(workout) { (success, error) in
@@ -183,27 +195,37 @@ final public class Cardio: NSObject, HKWorkoutSessionDelegate {
     
     private func startWorkout(workoutSession: HKWorkoutSession, date: NSDate) {
         startDate = date
+        started = true
         
-        queries.append(createStreamingQueries(context.distanceType, date: date))
-        queries.append(createStreamingQueries(context.activeEnergyType, date: date))
-        queries.append(createStreamingQueries(context.heartRateType, date: date))
-        
-        queries.forEach { healthStore.executeQuery($0) }
+        startQuery(startDate)
         
         startHandler?(.Success(workoutSession, date))
     }
     
     private func endWorkout(workoutSession: HKWorkoutSession, date: NSDate) {
         endDate = date
+        started = false
         
-        queries.forEach { healthStore.stopQuery($0) }
-        queries.removeAll()
+        stopQuery()
         self.workoutSession = nil
         
         endHandler?(.Success(workoutSession, date))
     }
     
     // MARK: - Query
+    
+    private func startQuery(date: NSDate) {
+        queries.append(createStreamingQueries(context.distanceType, date: date))
+        queries.append(createStreamingQueries(context.activeEnergyType, date: date))
+        queries.append(createStreamingQueries(context.heartRateType, date: date))
+        
+        queries.forEach { healthStore.executeQuery($0) }
+    }
+    
+    private func stopQuery() {
+        queries.forEach { healthStore.stopQuery($0) }
+        queries.removeAll(keepCapacity: true)
+    }
     
     private func createStreamingQueries<T: HKQuantityType>(type: T, date: NSDate) -> HKQuery {
         let predicate = HKQuery.predicateForSamplesWithStartDate(date, endDate: nil, options: .None)
@@ -225,7 +247,6 @@ final public class Cardio: NSObject, HKWorkoutSessionDelegate {
         let unit: HKUnit
         switch type {
         case context.distanceType:
-            currentDistanceQuantity = quantity
             distanceQuantities.appendContentsOf(samples)
             
             unit = context.distanceUnit
@@ -233,7 +254,6 @@ final public class Cardio: NSObject, HKWorkoutSessionDelegate {
                 distanceHandler?(quantity.doubleValueForUnit(unit), totalValue(unit))
             })
         case context.activeEnergyType:
-            currentActiveEnergyQuantity = quantity
             activeEnergyQuantities.appendContentsOf(samples)
             
             unit = context.activeEnergyUnit
@@ -241,7 +261,6 @@ final public class Cardio: NSObject, HKWorkoutSessionDelegate {
                 activeEnergyHandler?(quantity.doubleValueForUnit(unit), totalValue(unit))
             })
         case context.heartRateType:
-            currentHeartRateQuantity = quantity
             heartRateQuantities.appendContentsOf(samples)
             
             unit = context.heartRateUnit
