@@ -38,7 +38,9 @@ let cardio = Cardio(context: context)
 
 - Authorize HealthKit to access
 ```swift
-cardio.authorize { result in
+if !cardio.isAuthorized() {
+    cardio.authorize { result in
+    }
 }
 ```
 
