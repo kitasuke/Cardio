@@ -66,6 +66,14 @@ cardio.start { result in
 cardio.end { result in
 }
 ```
+- Pause your workout
+```swift
+cardio.pause()
+```
+- Resume your workout
+```swift
+cardio.resume()
+```
 
 - Save your workout in HealthKit
 ```swift
