@@ -3,7 +3,7 @@
 # Cardio
 Simple HealthKit wrapper for workout in watchOS 2
 
-*How it works in demo project*  
+How it works in demo project  
 <img src="https://raw.githubusercontent.com/wiki/kitasuke/Cardio/images/demo1.gif" width="144" height="168">
 
 ## Features
