@@ -64,16 +64,9 @@ class InterfaceController: WKInterfaceController {
         super.didDeactivate()
     }
 
-    @IBAction func startWorkout(sender: WKInterfaceButton) {
-        if cardio.started {
-            if cardio.paused {
-                startButton.setTitle("Pause")
-                cardio.resume()
-            } else {
-                startButton.setTitle("Resume")
-                cardio.pause()
-            }
-        } else {
+    @IBAction func startWorkout(sender: WKInterfaceButton) { 
+        switch cardio.state {
+        case .NotStarted, .Ended:
             startButton.setTitle("Pause")
             cardio.start { result in
                 switch result {
@@ -82,6 +75,12 @@ class InterfaceController: WKInterfaceController {
                     print(error)
                 }
             }
+        case .Running:
+            startButton.setTitle("Resume")
+            cardio.pause()
+        case .Paused:
+            startButton.setTitle("Pause")
+            cardio.resume()
         }
     }
     
