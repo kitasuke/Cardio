@@ -1,5 +1,5 @@
 //
-//  Context.swift
+//  ContextType.swift
 //  Cardio
 //
 //  Created by Yusuke Kita on 10/4/15.
@@ -17,7 +17,7 @@ public enum MetadataHeartRate: String {
 }
 
 @available (watchOS 2.0, *)
-public protocol Context {
+public protocol ContextType {
     var activityType: HKWorkoutActivityType { get }
     var locationType: HKWorkoutSessionLocationType { get }
     
@@ -36,7 +36,7 @@ public protocol Context {
 }
 
 @available (watchOS 2.0, *)
-public extension Context {
+public extension ContextType {
     public var activityType: HKWorkoutActivityType {
         return .Running
     }
