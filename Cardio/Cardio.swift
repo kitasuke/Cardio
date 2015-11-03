@@ -251,21 +251,21 @@ final public class Cardio: NSObject, HKWorkoutSessionDelegate {
             
             unit = context.distanceUnit
             dispatch_async(dispatch_get_main_queue(), { () -> Void in
-                distanceHandler?(quantity.doubleValueForUnit(unit), totalValue(unit))
+                self.distanceHandler?(quantity.doubleValueForUnit(unit), self.totalValue(unit))
             })
         case context.activeEnergyType:
             activeEnergyQuantities.appendContentsOf(samples)
             
             unit = context.activeEnergyUnit
             dispatch_async(dispatch_get_main_queue(), { () -> Void in
-                activeEnergyHandler?(quantity.doubleValueForUnit(unit), totalValue(unit))
+                self.activeEnergyHandler?(quantity.doubleValueForUnit(unit), self.totalValue(unit))
             })
         case context.heartRateType:
             heartRateQuantities.appendContentsOf(samples)
             
             unit = context.heartRateUnit
             dispatch_async(dispatch_get_main_queue(), { () -> Void in
-                heartRateHandler?(quantity.doubleValueForUnit(unit), averageHeartRate())
+                self.heartRateHandler?(quantity.doubleValueForUnit(unit), self.averageHeartRate())
             })
         default: return
         }
