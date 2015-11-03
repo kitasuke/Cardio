@@ -31,6 +31,10 @@ class InterfaceController: WKInterfaceController {
         cardio = Cardio(context: context)
         if !cardio.isAuthorized() {
             cardio.authorize() { result in
+                switch result {
+                case .Success: break
+                case let .Failure(error): break
+                }
             }
         }
         
@@ -71,6 +75,10 @@ class InterfaceController: WKInterfaceController {
         } else {
             startButton.setTitle("Pause")
             cardio.start { result in
+                switch result {
+                case .Success: break
+                case let .Failure(error): break
+                }
             }
         }
     }
@@ -81,11 +89,9 @@ class InterfaceController: WKInterfaceController {
             self.activeEnergyLabel.setText("0CAL")
             self.heartRateLabel.setText("0BPM")
             
-            switch result {
-            case .Success(_, _):
-                self.cardio.save() { result in
-                }
-            default: break
+            guard case .Success = result else { return }
+            
+            self.cardio.save() { result in
             }
         }
     }
