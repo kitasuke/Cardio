@@ -12,7 +12,7 @@ import Result
 
 @available (watchOS 2.0, *)
 final public class Cardio: NSObject, HKWorkoutSessionDelegate {
-    private let context: Context
+    private let context: ContextType
     private let healthStore: HKHealthStore
     private var workoutSession: HKWorkoutSession?
     
@@ -39,7 +39,7 @@ final public class Cardio: NSObject, HKWorkoutSessionDelegate {
     
     // MARK: - Initializer
     
-    public init <T: Context>(context: T) {
+    public init <T: ContextType>(context: T) {
         self.context = context
         self.healthStore = HKHealthStore()
         self.workoutSession = HKWorkoutSession(activityType: context.activityType, locationType: context.locationType)

@@ -8,16 +8,16 @@
 
 /* Begin PBXBuildFile section */
 		EC50FC101BC15FD300204798 /* Result.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EC50FC0F1BC15FD300204798 /* Result.framework */; };
-		EC50FC1B1BC16B5800204798 /* CardioError.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC50FC1A1BC16B5800204798 /* CardioError.swift */; settings = {ASSET_TAGS = (); }; };
-		EC50FC291BC173E800204798 /* Context.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC50FC281BC173E800204798 /* Context.swift */; settings = {ASSET_TAGS = (); }; };
+		EC50FC1B1BC16B5800204798 /* CardioError.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC50FC1A1BC16B5800204798 /* CardioError.swift */; };
+		EC50FC291BC173E800204798 /* ContextType.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC50FC281BC173E800204798 /* ContextType.swift */; };
 		EC95053F1BC1183D0056797E /* Cardio.h in Headers */ = {isa = PBXBuildFile; fileRef = EC95053E1BC1183D0056797E /* Cardio.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		EC9505471BC118820056797E /* Cardio.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC9505461BC118810056797E /* Cardio.swift */; settings = {ASSET_TAGS = (); }; };
+		EC9505471BC118820056797E /* Cardio.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC9505461BC118810056797E /* Cardio.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		EC50FC0F1BC15FD300204798 /* Result.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Result.framework; path = "../Carthage/Checkouts/Result/build/Debug-watchos/Result.framework"; sourceTree = "<group>"; };
 		EC50FC1A1BC16B5800204798 /* CardioError.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CardioError.swift; sourceTree = "<group>"; };
-		EC50FC281BC173E800204798 /* Context.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Context.swift; sourceTree = "<group>"; };
+		EC50FC281BC173E800204798 /* ContextType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContextType.swift; sourceTree = "<group>"; };
 		EC95053B1BC1183D0056797E /* Cardio.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Cardio.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		EC95053E1BC1183D0056797E /* Cardio.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Cardio.h; sourceTree = "<group>"; };
 		EC9505401BC1183D0056797E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -59,7 +59,7 @@
 				EC95053E1BC1183D0056797E /* Cardio.h */,
 				EC9505401BC1183D0056797E /* Info.plist */,
 				EC9505461BC118810056797E /* Cardio.swift */,
-				EC50FC281BC173E800204798 /* Context.swift */,
+				EC50FC281BC173E800204798 /* ContextType.swift */,
 				EC50FC1A1BC16B5800204798 /* CardioError.swift */,
 			);
 			path = Cardio;
@@ -144,7 +144,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				EC50FC291BC173E800204798 /* Context.swift in Sources */,
+				EC50FC291BC173E800204798 /* ContextType.swift in Sources */,
 				EC50FC1B1BC16B5800204798 /* CardioError.swift in Sources */,
 				EC9505471BC118820056797E /* Cardio.swift in Sources */,
 			);

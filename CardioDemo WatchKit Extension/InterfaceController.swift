@@ -11,7 +11,7 @@ import Foundation
 import Cardio
 import HealthKit
 
-struct CardioContext: Context {
+struct Context: ContextType {
 }
 
 class InterfaceController: WKInterfaceController {
@@ -27,7 +27,7 @@ class InterfaceController: WKInterfaceController {
         super.awakeWithContext(context)
         
         // Configure interface objects here.
-        let context = CardioContext()
+        let context = Context()
         cardio = Cardio(context: context)
         if !cardio.isAuthorized() {
             cardio.authorize() { result in
