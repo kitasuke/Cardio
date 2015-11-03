@@ -33,7 +33,8 @@ class InterfaceController: WKInterfaceController {
             cardio.authorize() { result in
                 switch result {
                 case .Success: break
-                case let .Failure(error): break
+                case let .Failure(error):
+                    print(error)
                 }
             }
         }
@@ -77,7 +78,8 @@ class InterfaceController: WKInterfaceController {
             cardio.start { result in
                 switch result {
                 case .Success: break
-                case let .Failure(error): break
+                case let .Failure(error):
+                    print(error)
                 }
             }
         }
@@ -89,9 +91,16 @@ class InterfaceController: WKInterfaceController {
             self.activeEnergyLabel.setText("0CAL")
             self.heartRateLabel.setText("0BPM")
             
-            guard case .Success = result else { return }
+            guard case .Success = result else {
+                print(result.error)
+                return
+            }
             
             self.cardio.save() { result in
+                guard case .Success = result else {
+                    print(result.error)
+                    return
+                }
             }
         }
     }
