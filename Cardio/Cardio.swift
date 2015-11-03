@@ -16,8 +16,7 @@ final public class Cardio: NSObject, HKWorkoutSessionDelegate {
     private let healthStore: HKHealthStore
     private var workoutSession: HKWorkoutSession?
     
-    public var started = false
-    public var paused = false
+    public private(set) var state: State = .NotStarted
     
     private var startHandler: (Result<(HKWorkoutSession, NSDate), CardioError> -> Void)?
     private var endHandler: (Result<(HKWorkoutSession, NSDate), CardioError> -> Void)?
@@ -36,6 +35,13 @@ final public class Cardio: NSObject, HKWorkoutSessionDelegate {
     private lazy var distanceQuantities = [HKQuantitySample]()
     private lazy var activeEnergyQuantities = [HKQuantitySample]()
     private lazy var heartRateQuantities = [HKQuantitySample]()
+    
+    public enum State {
+        case NotStarted
+        case Running
+        case Paused
+        case Ended
+    }
     
     // MARK: - Initializer
     
@@ -105,7 +111,7 @@ final public class Cardio: NSObject, HKWorkoutSessionDelegate {
     
     public func pause() {
         pauseDate = NSDate()
-        paused = true
+        state = .Paused
         
         stopQuery()
     }
@@ -113,7 +119,7 @@ final public class Cardio: NSObject, HKWorkoutSessionDelegate {
     public func resume() {
         let resumeDate = NSDate()
         pauseDuration = resumeDate.timeIntervalSinceDate(pauseDate)
-        paused = false
+        state = .Running
         
         startQuery(resumeDate)
     }
@@ -195,7 +201,7 @@ final public class Cardio: NSObject, HKWorkoutSessionDelegate {
     
     private func startWorkout(workoutSession: HKWorkoutSession, date: NSDate) {
         startDate = date
-        started = true
+        state = .Running
         
         startQuery(startDate)
         
@@ -204,7 +210,7 @@ final public class Cardio: NSObject, HKWorkoutSessionDelegate {
     
     private func endWorkout(workoutSession: HKWorkoutSession, date: NSDate) {
         endDate = date
-        started = false
+        state = .Ended
         
         stopQuery()
         self.workoutSession = nil
