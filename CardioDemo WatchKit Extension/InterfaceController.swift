@@ -100,6 +100,8 @@ class InterfaceController: WKInterfaceController {
                     print(result.error)
                     return
                 }
+                
+                guard let workout = result.value else { return }
             }
         }
     }

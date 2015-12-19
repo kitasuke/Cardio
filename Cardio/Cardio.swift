@@ -124,7 +124,7 @@ final public class Cardio: NSObject, HKWorkoutSessionDelegate {
         startQuery(resumeDate)
     }
     
-    public func save(var metadata: [String: AnyObject] = [:], handler: (Result<(), CardioError>) -> Void = { r in }) {
+    public func save(var metadata: [String: AnyObject] = [:], handler: (Result<HKWorkout, CardioError>) -> Void = { r in }) {
         guard case .OrderedDescending = endDate.compare(startDate) else {
             handler(.Failure(.InvalidDurationError))
             return
@@ -160,9 +160,9 @@ final public class Cardio: NSObject, HKWorkoutSessionDelegate {
             
             // save distance, active energy and heart rate themselves
             self.healthStore.addSamples(samples, toWorkout: workout, completion: { (success, error) -> Void in
-                let result: Result<(), CardioError>
+                let result: Result<HKWorkout, CardioError>
                 if success {
-                    result = .Success()
+                    result = .Success(workout)
                 } else {
                     result = .Failure(.DataSaveFailedError(error))
                 }
