@@ -95,18 +95,20 @@ final public class Cardio: NSObject, HKWorkoutSessionDelegate {
     public func start(handler: (Result<(HKWorkoutSession, NSDate), CardioError>) -> Void = { r in }) {
         startHandler = handler
         
-        if workoutSession == nil {
-            workoutSession = HKWorkoutSession(activityType: context.activityType, locationType: context.locationType)
-            workoutSession!.delegate = self
+        defer {
+            healthStore.startWorkoutSession(workoutSession!)
         }
-        healthStore.startWorkoutSession(workoutSession!)
+        
+        guard workoutSession == nil else { return }
+        workoutSession = HKWorkoutSession(activityType: context.activityType, locationType: context.locationType)
+        workoutSession!.delegate = self
     }
     
     public func end(handler: (Result<(HKWorkoutSession, NSDate), CardioError>) -> Void = { r in }) {
-        guard workoutSession != nil else { return }
+        guard let workoutSession = self.workoutSession else { return }
         
         endHandler = handler
-        healthStore.endWorkoutSession(workoutSession!)
+        healthStore.endWorkoutSession(workoutSession)
     }
     
     public func pause() {
@@ -150,7 +152,7 @@ final public class Cardio: NSObject, HKWorkoutSessionDelegate {
         let workout = HKWorkout(activityType: context.activityType, startDate: startDate, endDate: endDate, duration: endDate.timeIntervalSinceDate(startDate) - pauseDuration, totalEnergyBurned: HKQuantity(unit: context.activeEnergyUnit, doubleValue: totalActiveEnergy), totalDistance: HKQuantity(unit: context.distanceUnit, doubleValue: totalDistance), metadata: metadata)
         
         // save workout
-        healthStore.saveObject(workout) { (success, error) in
+        healthStore.saveObject(workout) { [weak self] (success, error) in
             guard success else {
                 dispatch_async(dispatch_get_main_queue(), { () -> Void in
                     handler(.Failure(.WorkoutSaveFailedError(error)))
@@ -159,7 +161,7 @@ final public class Cardio: NSObject, HKWorkoutSessionDelegate {
             }
             
             // save distance, active energy and heart rate themselves
-            self.healthStore.addSamples(samples, toWorkout: workout, completion: { (success, error) -> Void in
+            self?.healthStore.addSamples(samples, toWorkout: workout, completion: { (success, error) -> Void in
                 let result: Result<HKWorkout, CardioError>
                 if success {
                     result = .Success(workout)

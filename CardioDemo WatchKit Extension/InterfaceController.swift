@@ -39,18 +39,18 @@ class InterfaceController: WKInterfaceController {
             }
         }
         
-        cardio.distanceHandler = { distance, total in
-            self.totalDistance = total
-            self.distanceLabel.setText((NSString(format: "%0.2f", self.totalDistance) as String) + "KM")
+        cardio.distanceHandler = { [weak self] distance, total in
+            self?.totalDistance = total
+            self?.distanceLabel.setText((NSString(format: "%0.2f", total) as String) + "KM")
         }
         
-        cardio.activeEnergyHandler = { activeEnergy, total in
-            self.totalActiveEnergy = total
-            self.activeEnergyLabel.setText("\(Int(self.totalActiveEnergy))CAL")
+        cardio.activeEnergyHandler = { [weak self] activeEnergy, total in
+            self?.totalActiveEnergy = total
+            self?.activeEnergyLabel.setText("\(Int(total))CAL")
         }
         
-        cardio.heartRateHandler = { heartRate, average in
-            self.heartRateLabel.setText("\(Int(heartRate))BPM")
+        cardio.heartRateHandler = { [weak self] heartRate, average in
+            self?.heartRateLabel.setText("\(Int(heartRate))BPM")
         }
     }
 
@@ -85,17 +85,18 @@ class InterfaceController: WKInterfaceController {
     }
     
     @IBAction func endWorkout(sender: WKInterfaceButton) {
-        cardio.end { result in
-            self.distanceLabel.setText("0KM")
-            self.activeEnergyLabel.setText("0CAL")
-            self.heartRateLabel.setText("0BPM")
+        cardio.end { [weak self] result in
+            self?.distanceLabel.setText("0KM")
+            self?.activeEnergyLabel.setText("0CAL")
+            self?.heartRateLabel.setText("0BPM")
+            self?.startButton.setTitle("Start")
             
             guard case .Success = result else {
                 print(result.error)
                 return
             }
             
-            self.cardio.save() { result in
+            self?.cardio.save() { result in
                 guard case .Success = result else {
                     print(result.error)
                     return
