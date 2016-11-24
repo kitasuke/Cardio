@@ -196,6 +196,7 @@ final public class Cardio: NSObject, HKWorkoutSessionDelegate {
             startHandler?(.Failure(.SessionAlreadyRunningError(error)))
         case .Ended:
             startHandler?(.Failure(.CannotBeRestartedError(error)))
+        case .Paused: break
         }
     }
     

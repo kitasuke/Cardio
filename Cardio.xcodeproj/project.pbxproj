@@ -7,17 +7,17 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		EC50FC101BC15FD300204798 /* Result.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EC50FC0F1BC15FD300204798 /* Result.framework */; };
 		EC50FC1B1BC16B5800204798 /* CardioError.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC50FC1A1BC16B5800204798 /* CardioError.swift */; };
 		EC50FC291BC173E800204798 /* ContextType.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC50FC281BC173E800204798 /* ContextType.swift */; };
+		EC82B3121DE7803800289395 /* Result.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EC82B30F1DE77F5900289395 /* Result.framework */; };
 		EC95053F1BC1183D0056797E /* Cardio.h in Headers */ = {isa = PBXBuildFile; fileRef = EC95053E1BC1183D0056797E /* Cardio.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		EC9505471BC118820056797E /* Cardio.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC9505461BC118810056797E /* Cardio.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		EC50FC0F1BC15FD300204798 /* Result.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Result.framework; path = "../Carthage/Checkouts/Result/build/Debug-watchos/Result.framework"; sourceTree = "<group>"; };
 		EC50FC1A1BC16B5800204798 /* CardioError.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CardioError.swift; sourceTree = "<group>"; };
 		EC50FC281BC173E800204798 /* ContextType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContextType.swift; sourceTree = "<group>"; };
+		EC82B30F1DE77F5900289395 /* Result.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Result.framework; path = Carthage/Build/watchOS/Result.framework; sourceTree = "<group>"; };
 		EC95053B1BC1183D0056797E /* Cardio.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Cardio.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		EC95053E1BC1183D0056797E /* Cardio.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Cardio.h; sourceTree = "<group>"; };
 		EC9505401BC1183D0056797E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -29,18 +29,27 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				EC50FC101BC15FD300204798 /* Result.framework in Frameworks */,
+				EC82B3121DE7803800289395 /* Result.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		EC82B30E1DE77F5900289395 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				EC82B30F1DE77F5900289395 /* Result.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		EC9505311BC1183D0056797E = {
 			isa = PBXGroup;
 			children = (
 				EC95053D1BC1183D0056797E /* Cardio */,
 				EC95053C1BC1183D0056797E /* Products */,
+				EC82B30E1DE77F5900289395 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -55,7 +64,6 @@
 		EC95053D1BC1183D0056797E /* Cardio */ = {
 			isa = PBXGroup;
 			children = (
-				EC50FC0F1BC15FD300204798 /* Result.framework */,
 				EC95053E1BC1183D0056797E /* Cardio.h */,
 				EC9505401BC1183D0056797E /* Info.plist */,
 				EC9505461BC118810056797E /* Cardio.swift */,
@@ -109,6 +117,7 @@
 				TargetAttributes = {
 					EC95053A1BC1183D0056797E = {
 						CreatedOnToolsVersion = 7.0;
+						LastSwiftMigration = 0810;
 					};
 				};
 			};
@@ -248,7 +257,10 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/watchOS",
+				);
 				INFOPLIST_FILE = Cardio/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
@@ -256,6 +268,8 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 2.3;
+				WATCHOS_DEPLOYMENT_TARGET = 3.1;
 			};
 			name = Debug;
 		};
@@ -267,13 +281,18 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/watchOS",
+				);
 				INFOPLIST_FILE = Cardio/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.kitasuke.Cardio;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 2.3;
+				WATCHOS_DEPLOYMENT_TARGET = 3.1;
 			};
 			name = Release;
 		};
