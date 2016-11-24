@@ -9,7 +9,7 @@
 /* Begin PBXBuildFile section */
 		EC50FC1B1BC16B5800204798 /* CardioError.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC50FC1A1BC16B5800204798 /* CardioError.swift */; };
 		EC50FC291BC173E800204798 /* ContextType.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC50FC281BC173E800204798 /* ContextType.swift */; };
-		EC82B3121DE7803800289395 /* Result.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EC82B30F1DE77F5900289395 /* Result.framework */; };
+		EC82B3131DE785AA00289395 /* Result.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EC82B30F1DE77F5900289395 /* Result.framework */; };
 		EC95053F1BC1183D0056797E /* Cardio.h in Headers */ = {isa = PBXBuildFile; fileRef = EC95053E1BC1183D0056797E /* Cardio.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		EC9505471BC118820056797E /* Cardio.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC9505461BC118810056797E /* Cardio.swift */; };
 /* End PBXBuildFile section */
@@ -29,7 +29,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				EC82B3121DE7803800289395 /* Result.framework in Frameworks */,
+				EC82B3131DE785AA00289395 /* Result.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -112,7 +112,7 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 0700;
-				LastUpgradeCheck = 0700;
+				LastUpgradeCheck = 0810;
 				ORGANIZATIONNAME = kitasuke;
 				TargetAttributes = {
 					EC95053A1BC1183D0056797E = {
@@ -175,8 +175,10 @@
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
@@ -222,8 +224,10 @@
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
@@ -241,6 +245,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = watchos;
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
 				TARGETED_DEVICE_FAMILY = 4;
 				VALIDATE_PRODUCT = YES;
 				VERSIONING_SYSTEM = "apple-generic";
@@ -253,6 +258,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
 				DEFINES_MODULE = YES;
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
@@ -277,6 +283,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
 				DEFINES_MODULE = YES;
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
