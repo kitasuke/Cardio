@@ -9,16 +9,16 @@
 import Foundation
 
 @available (watchOS 2.0, *)
-public enum CardioError: ErrorType {
-    case UnsupportedDeviceError
-    case AuthorizationError(NSError?)
+public enum CardioError: Error {
+    case unsupportedDeviceError
+    case authorizationError(Error?)
 
-    case SessionAlreadyRunningError(NSError)
-    case NoCurrentSessionError(NSError)
-    case CannotBeRestartedError(NSError)
+    case sessionAlreadyRunningError(Error)
+    case noCurrentSessionError(Error)
+    case cannotBeRestartedError(Error)
     
-    case InvalidDurationError
-    case NoValidSavedDataError
-    case WorkoutSaveFailedError(NSError?)
-    case DataSaveFailedError(NSError?)
+    case invalidDurationError
+    case noValidSavedDataError
+    case workoutSaveFailedError(Error?)
+    case dataSaveFailedError(Error?)
 }

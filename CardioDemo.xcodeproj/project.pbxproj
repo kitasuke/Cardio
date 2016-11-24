@@ -7,8 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		EC02ECEB1BC910480051324A /* Cardio.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EC02ECEA1BC910480051324A /* Cardio.framework */; };
-		EC02ECEC1BC910480051324A /* Cardio.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = EC02ECEA1BC910480051324A /* Cardio.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		EC0F482D1BC53DB80013470A /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC0F482C1BC53DB80013470A /* AppDelegate.swift */; };
 		EC0F482F1BC53DB80013470A /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC0F482E1BC53DB80013470A /* ViewController.swift */; };
 		EC0F48321BC53DB80013470A /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = EC0F48301BC53DB80013470A /* Main.storyboard */; };
@@ -25,9 +23,11 @@
 		EC0F485A1BC53DB80013470A /* ComplicationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC0F48591BC53DB80013470A /* ComplicationController.swift */; };
 		EC0F485C1BC53DB80013470A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = EC0F485B1BC53DB80013470A /* Assets.xcassets */; };
 		EC0F48731BC5407C0013470A /* HealthKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EC0F48721BC5407C0013470A /* HealthKit.framework */; };
+		EC5A38BD1DE25AF100EFBA5B /* HealthKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EC5A38BC1DE25AF100EFBA5B /* HealthKit.framework */; };
+		EC70F4991DE248A600EDA1B7 /* Cardio.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EC70F4981DE248A600EDA1B7 /* Cardio.framework */; };
+		EC70F49A1DE248A600EDA1B7 /* Cardio.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = EC70F4981DE248A600EDA1B7 /* Cardio.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		ECC8CA331BC542B800E3DA6C /* Result.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ECC8CA301BC542B800E3DA6C /* Result.framework */; };
 		ECC8CA341BC542B800E3DA6C /* Result.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = ECC8CA301BC542B800E3DA6C /* Result.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		ECC8CA361BC545EC00E3DA6C /* HealthKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ECC8CA351BC545EC00E3DA6C /* HealthKit.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -86,7 +86,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				EC02ECEC1BC910480051324A /* Cardio.framework in Embed Frameworks */,
+				EC70F49A1DE248A600EDA1B7 /* Cardio.framework in Embed Frameworks */,
 				ECC8CA341BC542B800E3DA6C /* Result.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
@@ -95,7 +95,6 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		EC02ECEA1BC910480051324A /* Cardio.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cardio.framework; path = Carthage/Build/watchOS/Cardio.framework; sourceTree = "<group>"; };
 		EC0F48291BC53DB80013470A /* CardioDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CardioDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		EC0F482C1BC53DB80013470A /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		EC0F482E1BC53DB80013470A /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -117,8 +116,9 @@
 		EC0F485B1BC53DB80013470A /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		EC0F485D1BC53DB80013470A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		EC0F48721BC5407C0013470A /* HealthKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = HealthKit.framework; path = System/Library/Frameworks/HealthKit.framework; sourceTree = SDKROOT; };
+		EC5A38BC1DE25AF100EFBA5B /* HealthKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = HealthKit.framework; path = Platforms/WatchOS.platform/Developer/SDKs/WatchOS3.1.sdk/System/Library/Frameworks/HealthKit.framework; sourceTree = DEVELOPER_DIR; };
+		EC70F4981DE248A600EDA1B7 /* Cardio.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cardio.framework; path = Carthage/Build/watchOS/Cardio.framework; sourceTree = "<group>"; };
 		ECC8CA301BC542B800E3DA6C /* Result.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Result.framework; path = Carthage/Build/watchOS/Result.framework; sourceTree = "<group>"; };
-		ECC8CA351BC545EC00E3DA6C /* HealthKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = HealthKit.framework; path = Platforms/WatchOS.platform/Developer/SDKs/WatchOS2.0.sdk/System/Library/Frameworks/HealthKit.framework; sourceTree = DEVELOPER_DIR; };
 		ECC8CA371BC545EC00E3DA6C /* CardioDemo WatchKit Extension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = "CardioDemo WatchKit Extension.entitlements"; sourceTree = "<group>"; };
 		ECC8CA381BC545FD00E3DA6C /* CardioDemo.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = CardioDemo.entitlements; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -136,8 +136,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				EC02ECEB1BC910480051324A /* Cardio.framework in Frameworks */,
-				ECC8CA361BC545EC00E3DA6C /* HealthKit.framework in Frameworks */,
+				EC5A38BD1DE25AF100EFBA5B /* HealthKit.framework in Frameworks */,
+				EC70F4991DE248A600EDA1B7 /* Cardio.framework in Frameworks */,
 				ECC8CA331BC542B800E3DA6C /* Result.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -148,14 +148,14 @@
 		EC0F48201BC53DB80013470A = {
 			isa = PBXGroup;
 			children = (
-				EC02ECEA1BC910480051324A /* Cardio.framework */,
-				ECC8CA351BC545EC00E3DA6C /* HealthKit.framework */,
+				EC70F4981DE248A600EDA1B7 /* Cardio.framework */,
 				ECC8CA301BC542B800E3DA6C /* Result.framework */,
 				EC0F48721BC5407C0013470A /* HealthKit.framework */,
 				EC0F482B1BC53DB80013470A /* CardioDemo */,
 				EC0F483F1BC53DB80013470A /* CardioDemo WatchKit App */,
 				EC0F484E1BC53DB80013470A /* CardioDemo WatchKit Extension */,
 				EC0F482A1BC53DB80013470A /* Products */,
+				EC5A38BB1DE25AF100EFBA5B /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -215,6 +215,14 @@
 				EC0F48501BC53DB80013470A /* PushNotificationPayload.apns */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		EC5A38BB1DE25AF100EFBA5B /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				EC5A38BC1DE25AF100EFBA5B /* HealthKit.framework */,
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -281,12 +289,13 @@
 		EC0F48211BC53DB80013470A /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0700;
+				LastUpgradeCheck = 0810;
 				ORGANIZATIONNAME = kitasuke;
 				TargetAttributes = {
 					EC0F48281BC53DB80013470A = {
 						CreatedOnToolsVersion = 7.0.1;
 						DevelopmentTeam = 34P5LXX69P;
+						LastSwiftMigration = 0810;
 						SystemCapabilities = {
 							com.apple.HealthKit = {
 								enabled = 1;
@@ -296,10 +305,12 @@
 					EC0F483A1BC53DB80013470A = {
 						CreatedOnToolsVersion = 7.0.1;
 						DevelopmentTeam = 34P5LXX69P;
+						LastSwiftMigration = 0810;
 					};
 					EC0F48491BC53DB80013470A = {
 						CreatedOnToolsVersion = 7.0.1;
 						DevelopmentTeam = 34P5LXX69P;
+						LastSwiftMigration = 0810;
 						SystemCapabilities = {
 							com.apple.HealthKit = {
 								enabled = 1;
@@ -436,8 +447,10 @@
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
@@ -481,8 +494,10 @@
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
@@ -501,6 +516,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
 			};
@@ -524,6 +540,7 @@
 				PROVISIONING_PROFILE = "";
 				SDKROOT = watchos;
 				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 3.0;
 				TARGETED_DEVICE_FAMILY = 4;
 				WATCHOS_DEPLOYMENT_TARGET = 2.0;
 			};
@@ -547,6 +564,7 @@
 				PROVISIONING_PROFILE = "";
 				SDKROOT = watchos;
 				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 3.0;
 				TARGETED_DEVICE_FAMILY = 4;
 				WATCHOS_DEPLOYMENT_TARGET = 2.0;
 			};
@@ -555,15 +573,16 @@
 		EC0F48651BC53DB80013470A /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
-				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
 				IBSC_MODULE = CardioDemo_WatchKit_Extension;
 				INFOPLIST_FILE = "CardioDemo WatchKit App/Info.plist";
 				PRODUCT_BUNDLE_IDENTIFIER = com.kitasuke.CardioDemo.watchkitapp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = watchos;
 				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 3.0;
 				TARGETED_DEVICE_FAMILY = 4;
 				WATCHOS_DEPLOYMENT_TARGET = 2.0;
 			};
@@ -572,15 +591,16 @@
 		EC0F48661BC53DB80013470A /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
-				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
 				IBSC_MODULE = CardioDemo_WatchKit_Extension;
 				INFOPLIST_FILE = "CardioDemo WatchKit App/Info.plist";
 				PRODUCT_BUNDLE_IDENTIFIER = com.kitasuke.CardioDemo.watchkitapp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = watchos;
 				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 3.0;
 				TARGETED_DEVICE_FAMILY = 4;
 				WATCHOS_DEPLOYMENT_TARGET = 2.0;
 			};
@@ -602,6 +622,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.kitasuke.CardioDemo;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
+				SWIFT_VERSION = 3.0;
 			};
 			name = Debug;
 		};
@@ -621,6 +642,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.kitasuke.CardioDemo;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
+				SWIFT_VERSION = 3.0;
 			};
 			name = Release;
 		};

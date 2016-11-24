@@ -42,6 +42,10 @@
 		<key>NSExtensionPointIdentifier</key>
 		<string>com.apple.watchkit</string>
 	</dict>
+	<key>NSHealthShareUsageDescription</key>
+	<string>Health Share Usage Description</string>
+	<key>NSHealthUpdateUsageDescription</key>
+	<string>Health Update Usage Description</string>
 	<key>RemoteInterfacePrincipalClass</key>
 	<string>$(PRODUCT_MODULE_NAME).InterfaceController</string>
 	<key>UIRequiredDeviceCapabilities</key>
