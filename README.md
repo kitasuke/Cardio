@@ -1,7 +1,7 @@
 [![Carthage compatible](https://img.shields.io/badge/Carthage-compatible-4BC51D.svg?style=flat)](https://github.com/kitasuke/Cardio)
 
 # Cardio
-Simple HealthKit wrapper for workout in watchOS 2
+Simple HealthKit wrapper for workout in watchOS 3
 
 How it works in demo project  
 <img src="https://raw.githubusercontent.com/wiki/kitasuke/Cardio/images/demo1.gif" width="144" height="168">
@@ -88,8 +88,8 @@ See more detail in Demo project
 
 ## Requirements
 
-watchOS 2.0+  
-Swift 2.0+
+watchOS 3.0+  
+Swift 2.3+
 
 ## Installation
 
