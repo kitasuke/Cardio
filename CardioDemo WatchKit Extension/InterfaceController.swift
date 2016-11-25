@@ -28,15 +28,20 @@ class InterfaceController: WKInterfaceController {
         
         // Configure interface objects here.
         let context = Context()
-        cardio = Cardio(context: context)
-        if !cardio.isAuthorized() {
-            cardio.authorize() { result in
-                switch result {
-                case .Success: break
-                case let .Failure(error):
-                    print(error)
+        
+        do {
+            cardio = try Cardio(context: context)
+            if !cardio.isAuthorized() {
+                cardio.authorize() { result in
+                    switch result {
+                    case .Success: break
+                    case let .Failure(error):
+                        print(error)
+                    }
                 }
             }
+        } catch let error {
+            print(error)
         }
         
         cardio.distanceHandler = { [weak self] distance, total in
@@ -65,7 +70,7 @@ class InterfaceController: WKInterfaceController {
     }
 
     @IBAction func startWorkout(sender: WKInterfaceButton) { 
-        switch cardio.state {
+        switch cardio.workoutState {
         case .NotStarted, .Ended:
             startButton.setTitle("Pause")
             cardio.start { result in
