@@ -21,4 +21,6 @@ public enum CardioError: ErrorType {
     case NoValidSavedDataError
     case WorkoutSaveFailedError(NSError?)
     case DataSaveFailedError(NSError?)
+    
+    case UnexpectedWorkoutConfigurationError(NSError)
 }

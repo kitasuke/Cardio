@@ -9,14 +9,14 @@
 import Foundation
 import HealthKit
 
-@available (watchOS 2.0, *)
+@available (watchOS 3.0, *)
 public enum MetadataHeartRate: String {
     case Average = "Average Heart Rate"
     case Max = "Max Heart Rate"
     case Min = "Min Heart Rate"
 }
 
-@available (watchOS 2.0, *)
+@available (watchOS 3.0, *)
 public protocol ContextType {
     var activityType: HKWorkoutActivityType { get }
     var locationType: HKWorkoutSessionLocationType { get }
@@ -35,7 +35,7 @@ public protocol ContextType {
     var heartRateMetadata: [MetadataHeartRate] { get }
 }
 
-@available (watchOS 2.0, *)
+@available (watchOS 3.0, *)
 public extension ContextType {
     public var activityType: HKWorkoutActivityType {
         return .Running

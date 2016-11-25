@@ -10,20 +10,21 @@ import Foundation
 import HealthKit
 import Result
 
-@available (watchOS 2.0, *)
+@available (watchOS 3.0, *)
 final public class Cardio: NSObject, HKWorkoutSessionDelegate {
     private let context: ContextType
     private let healthStore: HKHealthStore
+    private let workoutConfiguration: HKWorkoutConfiguration
     private var workoutSession: HKWorkoutSession?
     
-    public private(set) var state: State = .NotStarted
+    public private(set) var workoutState: HKWorkoutSessionState = .NotStarted
     
     private var startHandler: (Result<(HKWorkoutSession, NSDate), CardioError> -> Void)?
     private var endHandler: (Result<(HKWorkoutSession, NSDate), CardioError> -> Void)?
     
-    public var distanceHandler: ((Double, Double) -> Void)?
-    public var activeEnergyHandler: ((Double, Double) -> Void)?
-    public var heartRateHandler: ((Double, Double) -> Void)?
+    public var distanceHandler: ((addedValue: Double, totalValue: Double) -> Void)?
+    public var activeEnergyHandler: ((addedValue: Double, totalValue: Double) -> Void)?
+    public var heartRateHandler: ((addedValue: Double, averageValue: Double) -> Void)?
     
     private var startDate = NSDate()
     private var endDate = NSDate()
@@ -36,6 +37,8 @@ final public class Cardio: NSObject, HKWorkoutSessionDelegate {
     private lazy var activeEnergyQuantities = [HKQuantitySample]()
     private lazy var heartRateQuantities = [HKQuantitySample]()
     
+    @available(*, deprecated, message="Please use `workoutState` instead")
+    public private(set) var state: State = .NotStarted
     public enum State {
         case NotStarted
         case Running
@@ -45,10 +48,14 @@ final public class Cardio: NSObject, HKWorkoutSessionDelegate {
     
     // MARK: - Initializer
     
-    public init <T: ContextType>(context: T) {
+    public init <T: ContextType>(context: T) throws {
         self.context = context
         self.healthStore = HKHealthStore()
-        self.workoutSession = HKWorkoutSession(activityType: context.activityType, locationType: context.locationType)
+        
+        self.workoutConfiguration = HKWorkoutConfiguration()
+        self.workoutConfiguration.activityType = context.activityType
+        self.workoutConfiguration.locationType = context.locationType
+        try self.workoutSession = HKWorkoutSession(configuration: self.workoutConfiguration)
         
         super.init()
         
@@ -100,7 +107,12 @@ final public class Cardio: NSObject, HKWorkoutSessionDelegate {
         }
         
         guard workoutSession == nil else { return }
-        workoutSession = HKWorkoutSession(activityType: context.activityType, locationType: context.locationType)
+        
+        do {
+            workoutSession = try HKWorkoutSession(configuration: workoutConfiguration)
+        } catch let error {
+            handler(.Failure(.UnexpectedWorkoutConfigurationError(error as NSError)))
+        }
         workoutSession!.delegate = self
     }
     
@@ -112,21 +124,18 @@ final public class Cardio: NSObject, HKWorkoutSessionDelegate {
     }
     
     public func pause() {
-        pauseDate = NSDate()
-        state = .Paused
+        guard let workoutSession = self.workoutSession else { return }
         
-        stopQuery()
+        healthStore.pauseWorkoutSession(workoutSession)
     }
     
     public func resume() {
-        let resumeDate = NSDate()
-        pauseDuration = resumeDate.timeIntervalSinceDate(pauseDate)
-        state = .Running
+        guard let workoutSession = self.workoutSession else { return }
         
-        startQuery(resumeDate)
+        healthStore.resumeWorkoutSession(workoutSession)
     }
     
-    public func save(var metadata: [String: AnyObject] = [:], handler: (Result<HKWorkout, CardioError>) -> Void = { r in }) {
+    public func save(metadata: [String: AnyObject] = [:], handler: (Result<HKWorkout, CardioError>) -> Void = { r in }) {
         guard case .OrderedDescending = endDate.compare(startDate) else {
             handler(.Failure(.InvalidDurationError))
             return
@@ -140,6 +149,7 @@ final public class Cardio: NSObject, HKWorkoutSessionDelegate {
             return
         }
         
+        var metadata = metadata
         heartRateMetadata().forEach { key, value in
             metadata[key] = value
         }
@@ -179,10 +189,16 @@ final public class Cardio: NSObject, HKWorkoutSessionDelegate {
     // MARK: - HKWorkoutSessionDelegate
 
     public func workoutSession(workoutSession: HKWorkoutSession, didChangeToState toState: HKWorkoutSessionState, fromState: HKWorkoutSessionState, date: NSDate) {
-        switch toState {
-        case .Running:
+        workoutState = workoutSession.state
+        
+        switch (fromState, toState) {
+        case (.Running, .Paused):
+            pauseWorkout(workoutSession, date: date)
+        case (.Paused, .Running):
+            resumeWorkout(workoutSession, date: date)
+        case (_, .Running):
             startWorkout(workoutSession, date: date)
-        case .Ended:
+        case (_, .Ended):
             endWorkout(workoutSession, date: date)
         default: break
         }
@@ -196,7 +212,7 @@ final public class Cardio: NSObject, HKWorkoutSessionDelegate {
             startHandler?(.Failure(.SessionAlreadyRunningError(error)))
         case .Ended:
             startHandler?(.Failure(.CannotBeRestartedError(error)))
-        case .Paused: break
+        default: break
         }
     }
     
@@ -204,16 +220,27 @@ final public class Cardio: NSObject, HKWorkoutSessionDelegate {
     
     private func startWorkout(workoutSession: HKWorkoutSession, date: NSDate) {
         startDate = date
-        state = .Running
         
         startQuery(startDate)
         
         startHandler?(.Success(workoutSession, date))
     }
     
+    private func pauseWorkout(workoutSession: HKWorkoutSession, date: NSDate) {
+        pauseDate = date
+        
+        stopQuery()
+    }
+    
+    private func resumeWorkout(workoutSesion: HKWorkoutSession, date: NSDate) {
+        let resumeDate = NSDate()
+        pauseDuration = resumeDate.timeIntervalSinceDate(pauseDate)
+        
+        startQuery(resumeDate)
+    }
+    
     private func endWorkout(workoutSession: HKWorkoutSession, date: NSDate) {
         endDate = date
-        state = .Ended
         
         stopQuery()
         self.workoutSession = nil
@@ -260,21 +287,21 @@ final public class Cardio: NSObject, HKWorkoutSessionDelegate {
             
             unit = context.distanceUnit
             dispatch_async(dispatch_get_main_queue(), { () -> Void in
-                self.distanceHandler?(quantity.doubleValueForUnit(unit), self.totalValue(unit))
+                self.distanceHandler?(addedValue: quantity.doubleValueForUnit(unit), totalValue: self.totalValue(unit))
             })
         case context.activeEnergyType:
             activeEnergyQuantities.appendContentsOf(samples)
             
             unit = context.activeEnergyUnit
             dispatch_async(dispatch_get_main_queue(), { () -> Void in
-                self.activeEnergyHandler?(quantity.doubleValueForUnit(unit), self.totalValue(unit))
+                self.activeEnergyHandler?(addedValue: quantity.doubleValueForUnit(unit), totalValue: self.totalValue(unit))
             })
         case context.heartRateType:
             heartRateQuantities.appendContentsOf(samples)
             
             unit = context.heartRateUnit
             dispatch_async(dispatch_get_main_queue(), { () -> Void in
-                self.heartRateHandler?(quantity.doubleValueForUnit(unit), self.averageHeartRate())
+                self.heartRateHandler?(addedValue: quantity.doubleValueForUnit(unit), averageValue: self.averageHeartRate())
             })
         default: return
         }
