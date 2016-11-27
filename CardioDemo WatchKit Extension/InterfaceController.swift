@@ -19,12 +19,12 @@ class InterfaceController: WKInterfaceController {
     @IBOutlet weak var activeEnergyLabel: WKInterfaceLabel!
     @IBOutlet weak var heartRateLabel: WKInterfaceLabel!
     @IBOutlet weak var startButton: WKInterfaceButton!
-    private var cardio: Cardio!
-    private var totalDistance: Double = 0
-    private var totalActiveEnergy: Double = 0
+    fileprivate var cardio: Cardio!
+    fileprivate var totalDistance: Double = 0
+    fileprivate var totalActiveEnergy: Double = 0
 
-    override func awakeWithContext(context: AnyObject?) {
-        super.awakeWithContext(context)
+    override func awake(withContext context: Any?) {
+        super.awake(withContext: context)
         
         // Configure interface objects here.
         let context = Context()
@@ -34,8 +34,8 @@ class InterfaceController: WKInterfaceController {
             if !cardio.isAuthorized() {
                 cardio.authorize() { result in
                     switch result {
-                    case .Success: break
-                    case let .Failure(error):
+                    case .success: break
+                    case let .failure(error):
                         print(error)
                     }
                 }
@@ -69,40 +69,40 @@ class InterfaceController: WKInterfaceController {
         super.didDeactivate()
     }
 
-    @IBAction func startWorkout(sender: WKInterfaceButton) { 
+    @IBAction func startWorkout(_ sender: WKInterfaceButton) { 
         switch cardio.workoutState {
-        case .NotStarted, .Ended:
+        case .notStarted, .ended:
             startButton.setTitle("Pause")
             cardio.start { result in
                 switch result {
-                case .Success: break
-                case let .Failure(error):
+                case .success: break
+                case let .failure(error):
                     print(error)
                 }
             }
-        case .Running:
+        case .running:
             startButton.setTitle("Resume")
             cardio.pause()
-        case .Paused:
+        case .paused:
             startButton.setTitle("Pause")
             cardio.resume()
         }
     }
     
-    @IBAction func endWorkout(sender: WKInterfaceButton) {
+    @IBAction func endWorkout(_ sender: WKInterfaceButton) {
         cardio.end { [weak self] result in
             self?.distanceLabel.setText("0KM")
             self?.activeEnergyLabel.setText("0CAL")
             self?.heartRateLabel.setText("0BPM")
             self?.startButton.setTitle("Start")
             
-            guard case .Success = result else {
+            guard case .success = result else {
                 print(result.error)
                 return
             }
             
             self?.cardio.save() { result in
-                guard case .Success = result else {
+                guard case .success = result else {
                     print(result.error)
                     return
                 }

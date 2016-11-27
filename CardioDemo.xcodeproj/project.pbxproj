@@ -23,10 +23,10 @@
 		EC0F485A1BC53DB80013470A /* ComplicationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC0F48591BC53DB80013470A /* ComplicationController.swift */; };
 		EC0F485C1BC53DB80013470A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = EC0F485B1BC53DB80013470A /* Assets.xcassets */; };
 		EC0F48731BC5407C0013470A /* HealthKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EC0F48721BC5407C0013470A /* HealthKit.framework */; };
-		ECC07B791DE7AD2F005D8315 /* Result.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ECC07B761DE7AD2F005D8315 /* Result.framework */; };
-		ECC07B7A1DE7AD2F005D8315 /* Result.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = ECC07B761DE7AD2F005D8315 /* Result.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		ECC07B801DE7BE3B005D8315 /* Cardio.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ECC07B7F1DE7BE3B005D8315 /* Cardio.framework */; };
-		ECC07B811DE7BE3B005D8315 /* Cardio.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = ECC07B7F1DE7BE3B005D8315 /* Cardio.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		EC644B351DEA2DAB00DA61F9 /* Cardio.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EC644B331DEA2DAB00DA61F9 /* Cardio.framework */; };
+		EC644B361DEA2DAB00DA61F9 /* Cardio.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = EC644B331DEA2DAB00DA61F9 /* Cardio.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		EC644B371DEA2DAB00DA61F9 /* Result.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EC644B341DEA2DAB00DA61F9 /* Result.framework */; };
+		EC644B381DEA2DAB00DA61F9 /* Result.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = EC644B341DEA2DAB00DA61F9 /* Result.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		ECEA154D1D69330E00987696 /* HealthKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ECC8CA351BC545EC00E3DA6C /* HealthKit.framework */; };
 /* End PBXBuildFile section */
 
@@ -80,14 +80,14 @@
 			name = "Embed Watch Content";
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		ECC07B7B1DE7AD2F005D8315 /* Embed Frameworks */ = {
+		EC644B391DEA2DAB00DA61F9 /* Embed Frameworks */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				ECC07B811DE7BE3B005D8315 /* Cardio.framework in Embed Frameworks */,
-				ECC07B7A1DE7AD2F005D8315 /* Result.framework in Embed Frameworks */,
+				EC644B361DEA2DAB00DA61F9 /* Cardio.framework in Embed Frameworks */,
+				EC644B381DEA2DAB00DA61F9 /* Result.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -116,8 +116,8 @@
 		EC0F485B1BC53DB80013470A /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		EC0F485D1BC53DB80013470A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		EC0F48721BC5407C0013470A /* HealthKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = HealthKit.framework; path = System/Library/Frameworks/HealthKit.framework; sourceTree = SDKROOT; };
-		ECC07B761DE7AD2F005D8315 /* Result.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Result.framework; path = Carthage/Build/watchOS/Result.framework; sourceTree = "<group>"; };
-		ECC07B7F1DE7BE3B005D8315 /* Cardio.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cardio.framework; path = Carthage/Build/watchOS/Cardio.framework; sourceTree = "<group>"; };
+		EC644B331DEA2DAB00DA61F9 /* Cardio.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cardio.framework; path = Carthage/Build/watchOS/Cardio.framework; sourceTree = "<group>"; };
+		EC644B341DEA2DAB00DA61F9 /* Result.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Result.framework; path = Carthage/Build/watchOS/Result.framework; sourceTree = "<group>"; };
 		ECC8CA351BC545EC00E3DA6C /* HealthKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = HealthKit.framework; path = /Applications/Xcode.app/Contents/Developer/Platforms/WatchOS.platform/Developer/SDKs/WatchOS2.0.sdk/System/Library/Frameworks/HealthKit.framework; sourceTree = "<absolute>"; };
 		ECC8CA371BC545EC00E3DA6C /* CardioDemo WatchKit Extension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = "CardioDemo WatchKit Extension.entitlements"; sourceTree = "<group>"; };
 		ECC8CA381BC545FD00E3DA6C /* CardioDemo.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = CardioDemo.entitlements; sourceTree = "<group>"; };
@@ -136,8 +136,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				ECC07B801DE7BE3B005D8315 /* Cardio.framework in Frameworks */,
-				ECC07B791DE7AD2F005D8315 /* Result.framework in Frameworks */,
+				EC644B371DEA2DAB00DA61F9 /* Result.framework in Frameworks */,
+				EC644B351DEA2DAB00DA61F9 /* Cardio.framework in Frameworks */,
 				ECEA154D1D69330E00987696 /* HealthKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -148,8 +148,8 @@
 		EC0F48201BC53DB80013470A = {
 			isa = PBXGroup;
 			children = (
-				ECC07B7F1DE7BE3B005D8315 /* Cardio.framework */,
-				ECC07B761DE7AD2F005D8315 /* Result.framework */,
+				EC644B331DEA2DAB00DA61F9 /* Cardio.framework */,
+				EC644B341DEA2DAB00DA61F9 /* Result.framework */,
 				EC0F48721BC5407C0013470A /* HealthKit.framework */,
 				EC0F482B1BC53DB80013470A /* CardioDemo */,
 				EC0F483F1BC53DB80013470A /* CardioDemo WatchKit App */,
@@ -263,7 +263,7 @@
 				EC0F48461BC53DB80013470A /* Sources */,
 				EC0F48471BC53DB80013470A /* Frameworks */,
 				EC0F48481BC53DB80013470A /* Resources */,
-				ECC07B7B1DE7AD2F005D8315 /* Embed Frameworks */,
+				EC644B391DEA2DAB00DA61F9 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
@@ -526,7 +526,7 @@
 				PROVISIONING_PROFILE = "";
 				SDKROOT = watchos;
 				SKIP_INSTALL = YES;
-				SWIFT_VERSION = 2.3;
+				SWIFT_VERSION = 3.0;
 				TARGETED_DEVICE_FAMILY = 4;
 				WATCHOS_DEPLOYMENT_TARGET = 3.0;
 			};
@@ -550,7 +550,7 @@
 				PROVISIONING_PROFILE = "";
 				SDKROOT = watchos;
 				SKIP_INSTALL = YES;
-				SWIFT_VERSION = 2.3;
+				SWIFT_VERSION = 3.0;
 				TARGETED_DEVICE_FAMILY = 4;
 				WATCHOS_DEPLOYMENT_TARGET = 3.0;
 			};
@@ -568,7 +568,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = watchos;
 				SKIP_INSTALL = YES;
-				SWIFT_VERSION = 2.3;
+				SWIFT_VERSION = 3.0;
 				TARGETED_DEVICE_FAMILY = 4;
 				WATCHOS_DEPLOYMENT_TARGET = 3.0;
 			};
@@ -586,7 +586,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = watchos;
 				SKIP_INSTALL = YES;
-				SWIFT_VERSION = 2.3;
+				SWIFT_VERSION = 3.0;
 				TARGETED_DEVICE_FAMILY = 4;
 				WATCHOS_DEPLOYMENT_TARGET = 3.0;
 			};
@@ -608,7 +608,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.kitasuke.CardioDemo;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
-				SWIFT_VERSION = 2.3;
+				SWIFT_VERSION = 3.0;
 			};
 			name = Debug;
 		};
@@ -628,7 +628,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.kitasuke.CardioDemo;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
-				SWIFT_VERSION = 2.3;
+				SWIFT_VERSION = 3.0;
 			};
 			name = Release;
 		};
