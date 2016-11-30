@@ -20,7 +20,7 @@ How it works in demo project
 public protocol Context {
     var activityType: HKWorkoutActivityType { get }
     var locationType: HKWorkoutSessionLocationType { get }
-    
+
     var distanceUnit: HKUnit { get }
     var activeEnergyUnit: HKUnit { get }
     var heartRateUnit: HKUnit { get }
@@ -28,7 +28,7 @@ public protocol Context {
     var distanceType: HKQuantityType { get }
     var activeEnergyType: HKQuantityType { get }
     var heartRateType: HKQuantityType { get }
-    
+
     var shareIdentifiers: [String] { get }
     var readIdentifiers: [String] { get }
 }
@@ -36,12 +36,12 @@ public protocol Context {
 
 - Initialize `Cardio` with context
 ```swift
-let cardio = Cardio(context: context)
+let cardio = try? Cardio(context: context)
 ```
 
 - Authorize HealthKit to access
 ```swift
-if !cardio.isAuthorized() {
+if !cardio.isAuthorized {
     cardio.authorize { result in
     }
 }
@@ -89,7 +89,7 @@ See more detail in Demo project
 ## Requirements
 
 watchOS 3.0+  
-Swift 2.3+
+Swift 3.0+
 
 ## Installation
 
@@ -106,7 +106,7 @@ github "kitasuke/Cardio"
 
 Then, run `carthage update`
 
-You can see `Cardio.framework` and `Result.framework` in `Carthage/Build/watchOS/` now, so drag and drop them to `Embedded Binaries` in General menu tab for your WatchKit Extension.
+You can see `Cardio.framework` and `Result.framework` in `Carthage/Build/iOs` and `Carthage/Build/watchOS/` now, so drag and drop them to `Embedded Binaries` in General menu tab for your iOS app and WatchKit Extension.
 
 In case you haven't installed Carthage yet, run the following command
 
