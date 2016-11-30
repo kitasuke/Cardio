@@ -9,14 +9,42 @@
 import Foundation
 import HealthKit
 
-@available (watchOS 3.0, *)
+#if os(iOS)
+
+public protocol ContextType {
+    var activityType: HKWorkoutActivityType { get }
+    var locationType: HKWorkoutSessionLocationType { get }
+    
+    var shareIdentifiers: [String] { get }
+    var readIdentifiers: [String] { get }
+}
+    
+extension ContextType {
+    public var activityType: HKWorkoutActivityType {
+        return .running
+    }
+    
+    public var locationType: HKWorkoutSessionLocationType {
+        return .outdoor
+    }
+    
+    public var shareIdentifiers: [String] {
+        return [HKQuantityTypeIdentifier.activeEnergyBurned.rawValue, HKQuantityTypeIdentifier.distanceWalkingRunning.rawValue, HKQuantityTypeIdentifier.heartRate.rawValue]
+    }
+    
+    public var readIdentifiers: [String] {
+        return [HKQuantityTypeIdentifier.activeEnergyBurned.rawValue, HKQuantityTypeIdentifier.distanceWalkingRunning.rawValue, HKQuantityTypeIdentifier.heartRate.rawValue]
+    }
+}
+
+#elseif os(watchOS)
+
 public enum MetadataHeartRate: String {
     case Average = "Average Heart Rate"
     case Max = "Max Heart Rate"
     case Min = "Min Heart Rate"
 }
 
-@available (watchOS 3.0, *)
 public protocol ContextType {
     var activityType: HKWorkoutActivityType { get }
     var locationType: HKWorkoutSessionLocationType { get }
@@ -24,7 +52,7 @@ public protocol ContextType {
     var distanceUnit: HKUnit { get }
     var activeEnergyUnit: HKUnit { get }
     var heartRateUnit: HKUnit { get }
-
+    
     var distanceType: HKQuantityType { get }
     var activeEnergyType: HKQuantityType { get }
     var heartRateType: HKQuantityType { get }
@@ -35,49 +63,50 @@ public protocol ContextType {
     var heartRateMetadata: [MetadataHeartRate] { get }
 }
 
-@available (watchOS 3.0, *)
 public extension ContextType {
     public var activityType: HKWorkoutActivityType {
-        return .Running
+        return .running
     }
     
     public var locationType: HKWorkoutSessionLocationType {
-        return .Outdoor
+        return .outdoor
     }
     
     public var distanceUnit: HKUnit {
-        return HKUnit.meterUnitWithMetricPrefix(.Kilo)
+        return HKUnit.meterUnit(with: .kilo)
     }
     
     public var activeEnergyUnit: HKUnit {
-        return HKUnit.kilocalorieUnit()
+        return HKUnit.kilocalorie()
     }
     
     public var heartRateUnit: HKUnit {
-        return HKUnit(fromString: "count/min")
+        return HKUnit(from: "count/min")
     }
     
     public var distanceType: HKQuantityType {
-        return HKObjectType.quantityTypeForIdentifier(HKQuantityTypeIdentifierDistanceWalkingRunning)!
+        return HKObjectType.quantityType(forIdentifier: HKQuantityTypeIdentifier.distanceWalkingRunning)!
     }
     
     public var activeEnergyType: HKQuantityType {
-        return HKObjectType.quantityTypeForIdentifier(HKQuantityTypeIdentifierActiveEnergyBurned)!
+        return HKObjectType.quantityType(forIdentifier: HKQuantityTypeIdentifier.activeEnergyBurned)!
     }
     
     public var heartRateType: HKQuantityType {
-        return HKObjectType.quantityTypeForIdentifier(HKQuantityTypeIdentifierHeartRate)!
+        return HKObjectType.quantityType(forIdentifier: HKQuantityTypeIdentifier.heartRate)!
     }
     
     public var shareIdentifiers: [String] {
-        return [HKQuantityTypeIdentifierActiveEnergyBurned, HKQuantityTypeIdentifierDistanceWalkingRunning, HKQuantityTypeIdentifierHeartRate]
+        return [HKQuantityTypeIdentifier.activeEnergyBurned.rawValue, HKQuantityTypeIdentifier.distanceWalkingRunning.rawValue, HKQuantityTypeIdentifier.heartRate.rawValue]
     }
     
     public var readIdentifiers: [String] {
-        return [HKQuantityTypeIdentifierActiveEnergyBurned, HKQuantityTypeIdentifierDistanceWalkingRunning, HKQuantityTypeIdentifierHeartRate]
+        return [HKQuantityTypeIdentifier.activeEnergyBurned.rawValue, HKQuantityTypeIdentifier.distanceWalkingRunning.rawValue, HKQuantityTypeIdentifier.heartRate.rawValue]
     }
     
     public var heartRateMetadata: [MetadataHeartRate] {
         return [.Average, .Max, .Min]
     }
 }
+
+#endif
