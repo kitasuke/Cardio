@@ -31,7 +31,7 @@ class InterfaceController: WKInterfaceController {
         
         do {
             cardio = try Cardio(context: context)
-            if !cardio.isAuthorized() {
+            if !cardio.isAuthorized {
                 cardio.authorize() { result in
                     switch result {
                     case .success: break

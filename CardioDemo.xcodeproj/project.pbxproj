@@ -27,7 +27,11 @@
 		EC644B361DEA2DAB00DA61F9 /* Cardio.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = EC644B331DEA2DAB00DA61F9 /* Cardio.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		EC644B371DEA2DAB00DA61F9 /* Result.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EC644B341DEA2DAB00DA61F9 /* Result.framework */; };
 		EC644B381DEA2DAB00DA61F9 /* Result.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = EC644B341DEA2DAB00DA61F9 /* Result.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		ECDA2F171DEE961300315EEF /* Result.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ECDA2F161DEE961300315EEF /* Result.framework */; };
+		ECDA2F181DEE961300315EEF /* Result.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = ECDA2F161DEE961300315EEF /* Result.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		ECEA154D1D69330E00987696 /* HealthKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ECC8CA351BC545EC00E3DA6C /* HealthKit.framework */; };
+		ECEA26121DEAD31F005133EB /* Cardio.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ECEA26111DEAD31F005133EB /* Cardio.framework */; };
+		ECEA26131DEAD31F005133EB /* Cardio.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = ECEA26111DEAD31F005133EB /* Cardio.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -48,16 +52,6 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
-		EC02ECE91BC910380051324A /* Embed Frameworks */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = "";
-			dstSubfolderSpec = 10;
-			files = (
-			);
-			name = "Embed Frameworks";
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		EC0F48631BC53DB80013470A /* Embed App Extensions */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
@@ -92,6 +86,18 @@
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		ECEA26101DEAD207005133EB /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				ECEA26131DEAD31F005133EB /* Cardio.framework in Embed Frameworks */,
+				ECDA2F181DEE961300315EEF /* Result.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
@@ -121,6 +127,8 @@
 		ECC8CA351BC545EC00E3DA6C /* HealthKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = HealthKit.framework; path = /Applications/Xcode.app/Contents/Developer/Platforms/WatchOS.platform/Developer/SDKs/WatchOS2.0.sdk/System/Library/Frameworks/HealthKit.framework; sourceTree = "<absolute>"; };
 		ECC8CA371BC545EC00E3DA6C /* CardioDemo WatchKit Extension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = "CardioDemo WatchKit Extension.entitlements"; sourceTree = "<group>"; };
 		ECC8CA381BC545FD00E3DA6C /* CardioDemo.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = CardioDemo.entitlements; sourceTree = "<group>"; };
+		ECDA2F161DEE961300315EEF /* Result.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Result.framework; path = Carthage/Build/iOS/Result.framework; sourceTree = "<group>"; };
+		ECEA26111DEAD31F005133EB /* Cardio.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cardio.framework; path = Carthage/Build/iOS/Cardio.framework; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -128,6 +136,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				ECDA2F171DEE961300315EEF /* Result.framework in Frameworks */,
+				ECEA26121DEAD31F005133EB /* Cardio.framework in Frameworks */,
 				EC0F48731BC5407C0013470A /* HealthKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -148,6 +158,8 @@
 		EC0F48201BC53DB80013470A = {
 			isa = PBXGroup;
 			children = (
+				ECDA2F161DEE961300315EEF /* Result.framework */,
+				ECEA26111DEAD31F005133EB /* Cardio.framework */,
 				EC644B331DEA2DAB00DA61F9 /* Cardio.framework */,
 				EC644B341DEA2DAB00DA61F9 /* Result.framework */,
 				EC0F48721BC5407C0013470A /* HealthKit.framework */,
@@ -227,7 +239,7 @@
 				EC0F48261BC53DB80013470A /* Frameworks */,
 				EC0F48271BC53DB80013470A /* Resources */,
 				EC0F48671BC53DB80013470A /* Embed Watch Content */,
-				EC02ECE91BC910380051324A /* Embed Frameworks */,
+				ECEA26101DEAD207005133EB /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
@@ -461,7 +473,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
@@ -500,7 +512,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -601,7 +613,7 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
-					"$(PROJECT_DIR)/Carthage/Build/watchOS",
+					"$(PROJECT_DIR)/Carthage/Build/iOS",
 				);
 				INFOPLIST_FILE = CardioDemo/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -621,7 +633,7 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
-					"$(PROJECT_DIR)/Carthage/Build/watchOS",
+					"$(PROJECT_DIR)/Carthage/Build/iOS",
 				);
 				INFOPLIST_FILE = CardioDemo/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";

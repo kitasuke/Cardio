@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Cardio
 import HealthKit
 
 @UIApplicationMain
@@ -46,18 +47,21 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         authorize()
     }
 
-    fileprivate func authorize(_ shareIdentifiers: [String] = [HKQuantityTypeIdentifier.distanceWalkingRunning.rawValue], readIdentifiers: [String] = [HKQuantityTypeIdentifier.activeEnergyBurned.rawValue, HKQuantityTypeIdentifier.distanceWalkingRunning.rawValue, HKQuantityTypeIdentifier.heartRate.rawValue]) {
-        let healthStore = HKHealthStore()
-        guard HKHealthStore.isHealthDataAvailable() else {
+    fileprivate func authorize() {
+        struct Context: ContextType {}
+        
+        let context = Context()
+        guard let cardio = try? Cardio(context: context), !cardio.isAuthorized else {
             return
         }
         
-        let shareTypes = shareIdentifiers.flatMap { HKObjectType.quantityType(forIdentifier: HKQuantityTypeIdentifier(rawValue: $0)) }
-        let typesToShare = Set([HKWorkoutType.workoutType()] as [HKSampleType] + shareTypes as [HKSampleType])
-        let typesToRead = Set(readIdentifiers.flatMap { HKObjectType.quantityType(forIdentifier: HKQuantityTypeIdentifier(rawValue: $0)) })
-        
-        healthStore.requestAuthorization(toShare: typesToShare, read: typesToRead, completion: { (result, error) -> Void in
-        })
+        cardio.authorize() { result in
+            switch result {
+            case .success: break
+            case let .failure(error):
+                print(error)
+            }
+        }
     }
 }
 
