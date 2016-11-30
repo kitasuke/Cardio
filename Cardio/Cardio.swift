@@ -10,21 +10,30 @@ import Foundation
 import HealthKit
 import Result
 
-@available (watchOS 3.0, *)
-final public class Cardio: NSObject, HKWorkoutSessionDelegate {
+final public class Cardio: NSObject {
+    public var isAuthorized: Bool {
+        let shareTypes = context.shareIdentifiers.flatMap { HKObjectType.quantityType(forIdentifier: HKQuantityTypeIdentifier(rawValue: $0)) } + [HKWorkoutType.workoutType()]
+        return shareTypes.contains {
+            switch healthStore.authorizationStatus(for: $0) {
+            case .sharingAuthorized: return true
+            default: return false
+            }
+        }
+    }
+    
     fileprivate let context: ContextType
-    fileprivate let healthStore: HKHealthStore
-    fileprivate let workoutConfiguration: HKWorkoutConfiguration
-    fileprivate var workoutSession: HKWorkoutSession?
+    fileprivate let healthStore = HKHealthStore()
+    fileprivate let workoutConfiguration = HKWorkoutConfiguration()
     
-    public fileprivate(set) var workoutState: HKWorkoutSessionState = .notStarted
-    
-    fileprivate var startHandler: ((Result<(HKWorkoutSession, Date), CardioError>) -> Void)?
-    fileprivate var endHandler: ((Result<(HKWorkoutSession, Date), CardioError>) -> Void)?
-    
+    #if os(watchOS)
     public var distanceHandler: ((_ addedValue: Double, _ totalValue: Double) -> Void)?
     public var activeEnergyHandler: ((_ addedValue: Double, _ totalValue: Double) -> Void)?
     public var heartRateHandler: ((_ addedValue: Double, _ averageValue: Double) -> Void)?
+    
+    public fileprivate(set) var workoutState: HKWorkoutSessionState = .notStarted
+    fileprivate var workoutSession: HKWorkoutSession?
+    fileprivate var startHandler: ((Result<(HKWorkoutSession, Date), CardioError>) -> Void)?
+    fileprivate var endHandler: ((Result<(HKWorkoutSession, Date), CardioError>) -> Void)?
     
     fileprivate var startDate = Date()
     fileprivate var endDate = Date()
@@ -32,12 +41,11 @@ final public class Cardio: NSObject, HKWorkoutSessionDelegate {
     fileprivate var pauseDuration: TimeInterval = 0
     
     fileprivate lazy var queries = [HKQuery]()
-    
     fileprivate lazy var distanceQuantities = [HKQuantitySample]()
     fileprivate lazy var activeEnergyQuantities = [HKQuantitySample]()
     fileprivate lazy var heartRateQuantities = [HKQuantitySample]()
     
-    @available(*, deprecated, message: "Please use `workoutState` instead")
+    @available(*, unavailable, message: "Please use `workoutState` instead")
     public fileprivate(set) var state: State = .notStarted
     public enum State {
         case notStarted
@@ -45,36 +53,27 @@ final public class Cardio: NSObject, HKWorkoutSessionDelegate {
         case paused
         case ended
     }
+    #endif
     
     // MARK: - Initializer
     
-    public init <T: ContextType>(context: T) throws {
+    public init (context: ContextType) throws {
         self.context = context
-        self.healthStore = HKHealthStore()
-        
-        self.workoutConfiguration = HKWorkoutConfiguration()
         self.workoutConfiguration.activityType = context.activityType
         self.workoutConfiguration.locationType = context.locationType
+        
+        #if os(watchOS)
         try self.workoutSession = HKWorkoutSession(configuration: self.workoutConfiguration)
+        #endif
         
         super.init()
         
+        #if os(watchOS)
         self.workoutSession!.delegate = self
+        #endif
     }
     
     // MARK: - Public
-    
-    public func isAuthorized() -> Bool {
-        var result = true
-        let shareTypes = context.shareIdentifiers.flatMap { HKObjectType.quantityType(forIdentifier: HKQuantityTypeIdentifier(rawValue: $0)) } + [HKWorkoutType.workoutType()]
-        shareTypes.forEach {
-            switch healthStore.authorizationStatus(for: $0) {
-            case .sharingAuthorized: return
-            default: result = false
-            }
-        }
-        return result
-    }
     
     public func authorize(_ handler: @escaping (Result<(), CardioError>) -> Void = { r in }) {
         guard HKHealthStore.isHealthDataAvailable() else {
@@ -99,6 +98,7 @@ final public class Cardio: NSObject, HKWorkoutSessionDelegate {
         }
     }
     
+    #if os(watchOS)
     public func start(_ handler: @escaping (Result<(HKWorkoutSession, Date), CardioError>) -> Void = { r in }) {
         startHandler = handler
         
@@ -184,36 +184,6 @@ final public class Cardio: NSObject, HKWorkoutSessionDelegate {
                 })
             })
         }) 
-    }
-    
-    // MARK: - HKWorkoutSessionDelegate
-
-    public func workoutSession(_ workoutSession: HKWorkoutSession, didChangeTo toState: HKWorkoutSessionState, from fromState: HKWorkoutSessionState, date: Date) {
-        workoutState = workoutSession.state
-        
-        switch (fromState, toState) {
-        case (.running, .paused):
-            pauseWorkout(workoutSession, date: date)
-        case (.paused, .running):
-            resumeWorkout(workoutSession, date: date)
-        case (_, .running):
-            startWorkout(workoutSession, date: date)
-        case (_, .ended):
-            endWorkout(workoutSession, date: date)
-        default: break
-        }
-    }
-    
-    public func workoutSession(_ workoutSession: HKWorkoutSession, didFailWithError error: Error) {
-        switch workoutSession.state {
-        case .notStarted:
-            endHandler?(.failure(.noCurrentSessionError(error)))
-        case .running:
-            startHandler?(.failure(.sessionAlreadyRunningError(error)))
-        case .ended:
-            startHandler?(.failure(.cannotBeRestartedError(error)))
-        default: break
-        }
     }
     
     // MARK: - Private
@@ -357,4 +327,39 @@ final public class Cardio: NSObject, HKWorkoutSessionDelegate {
         }
         return metadata
     }
+    #endif
 }
+
+#if os(watchOS)
+extension Cardio: HKWorkoutSessionDelegate {
+    // MARK: - HKWorkoutSessionDelegate
+    
+    public func workoutSession(_ workoutSession: HKWorkoutSession, didChangeTo toState: HKWorkoutSessionState, from fromState: HKWorkoutSessionState, date: Date) {
+        workoutState = workoutSession.state
+        
+        switch (fromState, toState) {
+        case (.running, .paused):
+            pauseWorkout(workoutSession, date: date)
+        case (.paused, .running):
+            resumeWorkout(workoutSession, date: date)
+        case (_, .running):
+            startWorkout(workoutSession, date: date)
+        case (_, .ended):
+            endWorkout(workoutSession, date: date)
+        default: break
+        }
+    }
+    
+    public func workoutSession(_ workoutSession: HKWorkoutSession, didFailWithError error: Error) {
+        switch workoutSession.state {
+        case .notStarted:
+            endHandler?(.failure(.noCurrentSessionError(error)))
+        case .running:
+            startHandler?(.failure(.sessionAlreadyRunningError(error)))
+        case .ended:
+            startHandler?(.failure(.cannotBeRestartedError(error)))
+        default: break
+        }
+    }
+}
+#endif

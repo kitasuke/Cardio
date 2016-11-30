@@ -12,6 +12,11 @@
 		EC82B3131DE785AA00289395 /* Result.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EC82B30F1DE77F5900289395 /* Result.framework */; };
 		EC95053F1BC1183D0056797E /* Cardio.h in Headers */ = {isa = PBXBuildFile; fileRef = EC95053E1BC1183D0056797E /* Cardio.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		EC9505471BC118820056797E /* Cardio.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC9505461BC118810056797E /* Cardio.swift */; };
+		ECEA26051DEAC912005133EB /* Result.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ECEA26041DEAC912005133EB /* Result.framework */; };
+		ECEA26061DEACA14005133EB /* Cardio.h in Headers */ = {isa = PBXBuildFile; fileRef = EC95053E1BC1183D0056797E /* Cardio.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		ECEA260A1DEACB0C005133EB /* Cardio.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC9505461BC118810056797E /* Cardio.swift */; };
+		ECEA260B1DEACB0F005133EB /* ContextType.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC50FC281BC173E800204798 /* ContextType.swift */; };
+		ECEA260C1DEACB12005133EB /* CardioError.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC50FC1A1BC16B5800204798 /* CardioError.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -22,6 +27,8 @@
 		EC95053E1BC1183D0056797E /* Cardio.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Cardio.h; sourceTree = "<group>"; };
 		EC9505401BC1183D0056797E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		EC9505461BC118810056797E /* Cardio.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Cardio.swift; sourceTree = "<group>"; };
+		ECEA25FC1DEAC77F005133EB /* Cardio.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Cardio.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		ECEA26041DEAC912005133EB /* Result.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Result.framework; path = Carthage/Build/iOS/Result.framework; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -33,12 +40,21 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		ECEA25F81DEAC77F005133EB /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				ECEA26051DEAC912005133EB /* Result.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
 		EC82B30E1DE77F5900289395 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				ECEA26041DEAC912005133EB /* Result.framework */,
 				EC82B30F1DE77F5900289395 /* Result.framework */,
 			);
 			name = Frameworks;
@@ -57,6 +73,7 @@
 			isa = PBXGroup;
 			children = (
 				EC95053B1BC1183D0056797E /* Cardio.framework */,
+				ECEA25FC1DEAC77F005133EB /* Cardio.framework */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -84,6 +101,14 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		ECEA25F91DEAC77F005133EB /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				ECEA26061DEACA14005133EB /* Cardio.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
@@ -105,6 +130,24 @@
 			productReference = EC95053B1BC1183D0056797E /* Cardio.framework */;
 			productType = "com.apple.product-type.framework";
 		};
+		ECEA25FB1DEAC77F005133EB /* Cardio-iOS */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = ECEA26031DEAC780005133EB /* Build configuration list for PBXNativeTarget "Cardio-iOS" */;
+			buildPhases = (
+				ECEA25F71DEAC77F005133EB /* Sources */,
+				ECEA25F81DEAC77F005133EB /* Frameworks */,
+				ECEA25F91DEAC77F005133EB /* Headers */,
+				ECEA25FA1DEAC77F005133EB /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "Cardio-iOS";
+			productName = "Cardio-iOS";
+			productReference = ECEA25FC1DEAC77F005133EB /* Cardio.framework */;
+			productType = "com.apple.product-type.framework";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -118,6 +161,10 @@
 					EC95053A1BC1183D0056797E = {
 						CreatedOnToolsVersion = 7.0;
 						LastSwiftMigration = 0810;
+					};
+					ECEA25FB1DEAC77F005133EB = {
+						CreatedOnToolsVersion = 8.1;
+						ProvisioningStyle = Manual;
 					};
 				};
 			};
@@ -134,12 +181,20 @@
 			projectRoot = "";
 			targets = (
 				EC95053A1BC1183D0056797E /* Cardio */,
+				ECEA25FB1DEAC77F005133EB /* Cardio-iOS */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
 		EC9505391BC1183D0056797E /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		ECEA25FA1DEAC77F005133EB /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -156,6 +211,16 @@
 				EC50FC291BC173E800204798 /* ContextType.swift in Sources */,
 				EC50FC1B1BC16B5800204798 /* CardioError.swift in Sources */,
 				EC9505471BC118820056797E /* Cardio.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		ECEA25F71DEAC77F005133EB /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				ECEA260A1DEACB0C005133EB /* Cardio.swift in Sources */,
+				ECEA260C1DEACB12005133EB /* CardioError.swift in Sources */,
+				ECEA260B1DEACB0F005133EB /* ContextType.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -303,6 +368,67 @@
 			};
 			name = Release;
 		};
+		ECEA26011DEAC780005133EB /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_SUSPICIOUS_MOVES = YES;
+				CODE_SIGN_IDENTITY = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				DEFINES_MODULE = YES;
+				DEVELOPMENT_TEAM = "";
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/iOS",
+				);
+				INFOPLIST_FILE = Cardio/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.kitasuke.Cardio;
+				PRODUCT_NAME = Cardio;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_VERSION = 3.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		ECEA26021DEAC780005133EB /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_SUSPICIOUS_MOVES = YES;
+				CODE_SIGN_IDENTITY = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				DEFINES_MODULE = YES;
+				DEVELOPMENT_TEAM = "";
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/iOS",
+				);
+				INFOPLIST_FILE = Cardio/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.kitasuke.Cardio;
+				PRODUCT_NAME = Cardio;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 3.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -320,6 +446,15 @@
 			buildConfigurations = (
 				EC9505441BC1183D0056797E /* Debug */,
 				EC9505451BC1183D0056797E /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		ECEA26031DEAC780005133EB /* Build configuration list for PBXNativeTarget "Cardio-iOS" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				ECEA26011DEAC780005133EB /* Debug */,
+				ECEA26021DEAC780005133EB /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
